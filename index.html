@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fundación AUR ESAL · Visor</title>
+
+  <!-- Paleta (tomada del logo: azul, verde, amarillo) -->
+  <style>
+    :root{
+      --azul:#0a7bc2;         /* azul logo */
+      --verde:#2aa843;        /* verde logo */
+      --amarillo:#ffc400;     /* amarillo logo */
+      --fondo:#0b1220;        /* fondo profundo */
+      --tinta:#e8eef5;        /* texto claro */
+      --muted:#a9b4c7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:var(--fondo);color:var(--tinta)}
+    a{color:var(--amarillo);text-decoration:none}
+    header{
+      position:sticky;top:0;z-index:10;
+      background:linear-gradient(90deg,var(--azul),var(--verde));
+      color:#062018;border-bottom:2px solid rgba(0,0,0,.15)
+    }
+    .wrap{max-width:1200px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{height:32px;width:auto;border-radius:8px;background:#fff;padding:4px}
+    .grow{flex:1}
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--amarillo),#fff);color:#07330f;font-weight:700}
+    #map{height:calc(100vh - 70px);width:100%;border-top:1px solid rgba(255,255,255,.08)}
+    .legend{
+      position:fixed;right:14px;top:86px;z-index:1000;
+      background:rgba(11,18,32,.85);backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 10px;font-size:12px
+    }
+    .legend .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+    .btn{
+      padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);
+      background:linear-gradient(90deg,var(--azul),var(--verde));color:#06110a;font-weight:700;cursor:pointer
+    }
+  </style>
+
+  <!-- Leaflet (2D) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="icon" href="logo.jpeg" />
+</head>
+<body>
+  <!-- Barra superior con marca en colores del logo -->
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <img src="logo.jpeg" alt="AUR ESAL" />
+        <span>Fundación Agua y Urbanismo — AUR ESAL</span>
+      </div>
+      <div class="grow"></div>
+      <button id="btn-osm" class="btn" title="OpenStreetMap">OSM</button>
+      <button id="btn-positron" class="btn" title="CARTO Positron" style="margin-left:6px">CARTO</button>
+      <button id="btn-esri" class="btn" title="Esri Satélite" style="margin-left:6px">Satélite</button>
+      <button id="btn-reset" class="btn" title="Volver a inicio" style="margin-left:6px">Inicio</button>
+    </div>
+  </header>
+
+  <!-- Visor (pantalla principal) -->
+  <div id="map" aria-label="Visor principal"></div>
+  <div class="legend" aria-label="Leyenda">
+    <div><span class="dot" style="background:var(--azul)"></span>Mapa base</div>
+    <div><span class="dot" style="background:var(--verde)"></span>Capas AUR (próximas)</div>
+  </div>
+
+  <script>
+    // Vista inicial (Boyacá aprox.) — se muestra el visor de inmediato
+    const START = { lat: 5.54, lng: -73.36, zoom: 13 };
+
+    // Capas base
+    const base = {
+      osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+      }),
+      positron: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OSM & CARTO', subdomains:'abcd', maxZoom: 20
+      }),
+      esri: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; Esri'
+      })
+    };
+
+    // Mapa 2D (portada)
+    const map = L.map('map', {
+      center:[START.lat, START.lng], zoom: START.zoom, layers:[base.positron]
+    });
+    L.control.scale({imperial:false}).addTo(map);
+
+    // Botones de cabecera (cambian base y hacen “pantallazo” inicial de inmediato)
+    document.getElementById('btn-osm').onclick      = ()=> setBase(base.osm);
+    document.getElementById('btn-positron').onclick = ()=> setBase(base.positron);
+    document.getElementById('btn-esri').onclick     = ()=> setBase(base.esri);
+    document.getElementById('btn-reset').onclick    = ()=> map.setView([START.lat, START.lng], START.zoom);
+
+    function setBase(layer){
+      Object.values(base).forEach(l=>{ if(map.hasLayer(l)) map.removeLayer(l); });
+      layer.addTo(map);
+    }
+
+    // Marcador de bienvenida con colores del logo
+    const popupHTML = `
+      <div style="font-weight:700;color:#06110a;background:linear-gradient(90deg,var(--azul),var(--verde));padding:6px 10px;border-radius:8px">
+        Áurea · Visor AUR ESAL
+      </div>
+      <div style="margin-top:6px;color:var(--tinta)">Mapa inicial en los tonos del logo.</div>`;
+    L.marker([START.lat, START.lng]).addTo(map).bindPopup(popupHTML).openPopup();
+  </script>
+</body>
+</html>
