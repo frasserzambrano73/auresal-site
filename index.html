@@ -3,114 +3,1025 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fundación AUR ESAL · Visor</title>
-
-  <!-- Paleta (tomada del logo: azul, verde, amarillo) -->
+  <title>Visor Aurea 2025</title>
+  <meta name="description" content="Visor 2D/3D con dibujo, medición, búsqueda, hash compartible, capas base, overlays (WorldCover, FIRMS) y control trackball 3D." />
+  <meta name="theme-color" content="#0a7bc2" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%230a7bc2'/><path d='M20 60 L45 35 L60 50 L80 30' stroke='white' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <!-- Preconexiones -->
+  <link rel="preconnect" href="https://a.tile.openstreetmap.org" crossorigin>
+  <link rel="preconnect" href="https://b.tile.openstreetmap.org" crossorigin>
+  <link rel="preconnect" href="https://c.tile.openstreetmap.org" crossorigin>
+  <link rel="preconnect" href="https://server.arcgisonline.com" crossorigin>
+  <link rel="preconnect" href="https://tiles.maps.eox.at" crossorigin>
+  <link rel="preconnect" href="https://firms.modaps.eosdis.nasa.gov" crossorigin>
+  <!-- Leaflet + Geoman -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
+  <script defer src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+  <!-- MapLibre GL (3D) -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css"/>
+  <script defer src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
   <style>
-    :root{
-      --azul:#0a7bc2;         /* azul logo */
-      --verde:#2aa843;        /* verde logo */
-      --amarillo:#ffc400;     /* amarillo logo */
-      --fondo:#0b1220;        /* fondo profundo */
-      --tinta:#e8eef5;        /* texto claro */
-      --muted:#a9b4c7;
+    :root {
+      --primary: #0a7bc2;
+      --secondary: #2aa843;
+      --accent: #ffc400;
+      --bg: #ffffff;
+      --card: #f8f9fa;
+      --border: #4e4f51;
+      --text: #212529;
+      --muted: #6c757d;
+      --shadow: 0 6px 18px rgba(0,0,0,.1);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:var(--fondo);color:var(--tinta)}
-    a{color:var(--amarillo);text-decoration:none}
-    header{
-      position:sticky;top:0;z-index:10;
-      background:linear-gradient(90deg,var(--azul),var(--verde));
-      color:#062018;border-bottom:2px solid rgba(0,0,0,.15)
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg), #fafafa);
     }
-    .wrap{max-width:1200px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
-    .brand img{height:32px;width:auto;border-radius:8px;background:#fff;padding:4px}
-    .grow{flex:1}
-    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--amarillo),#fff);color:#07330f;font-weight:700}
-    #map{height:calc(100vh - 70px);width:100%;border-top:1px solid rgba(255,255,255,.08)}
-    .legend{
-      position:fixed;right:14px;top:86px;z-index:1000;
-      background:rgba(11,18,32,.85);backdrop-filter:blur(6px);
-      border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 10px;font-size:12px
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
-    .legend .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
-    .btn{
-      padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);
-      background:linear-gradient(90deg,var(--azul),var(--verde));color:#06110a;font-weight:700;cursor:pointer
+    .wrap {
+      max-width: 1400px;
+      margin: auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-container img {
+      height: 32px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+    nav.top-menu {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      font-weight: 600;
+      margin-left: auto;
+    }
+    nav.top-menu a,
+    .dropdown-btn {
+      text-decoration: none;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    nav.top-menu a:hover,
+    .dropdown-btn:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    .dropdown-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--card);
+      min-width: 160px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-top: none;
+      z-index: 1001;
+      border-radius: 0 0 6px 6px;
+    }
+    .dropdown-content a {
+      color: var(--text);
+      padding: 10px 20px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.2s;
+    }
+    .dropdown-content a:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    .dropdown.active .dropdown-content {
+      display: block;
+    }
+    #shell {
+      position: relative;
+      height: calc(100vh - 64px);
+    }
+    #map, #map3d {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    #map3d { display: none; }
+    .toolbar {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      min-width: 180px;
+    }
+    .toolbar .row { display: flex; gap: 8px; }
+    .btn {
+      border: 1px solid var(--border);
+      background: #f8f9fa;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .btn.active {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+    .btn.primary {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border: none;
+      color: white;
+    }
+    .input {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      color: var(--text);
+      width: 100%;
+    }
+    .drawer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 360px;
+      height: 100%;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      transform: translateX(-100%);
+      transition: transform .35s ease;
+      z-index: 1002;
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.8);
+    }
+    .drawer .content { padding: 16px; overflow: auto; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .tab {
+      padding: 8px 12px;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--border);
+    }
+    .panel { display: none; }
+    .panel.active {
+      display: block;
+      animation: fadeIn .25s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+      background: rgba(26,35,53,.05);
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .coord {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(26,35,53,.05);
+      border-radius: 10px;
+    }
+    .layer-menu .toggle-btn {
+      display: none;
+      background: rgba(255,255,255,0.92);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 18px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    .layer-menu .dropdown {
+      position: absolute;
+      top: 56px;
+      right: 0;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 220px;
+    }
+    .layer-menu .dropdown.active { display: flex; }
+    .layer-menu .option {
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .layer-menu .option.active {
+      background: var(--primary);
+      color: white;
+    }
+    .legend {
+      font-size: .9rem;
+      color: var(--muted);
+      display: grid;
+      gap: 4px;
+    }
+    .legend .k {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .hud {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+    .loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(2px);
+      border-radius: 14px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .loading.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .trackball {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1002;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      display: none;
+    }
+    #tb {
+      width: 160px;
+      height: 160px;
+      display: block;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #eaf2ff, #c6d8ff 60%, #b8c8e6 80%, #a6b6d4 100%);
+      box-shadow: inset -8px -10px 18px rgba(0,0,0,.15), inset 10px 12px 20px rgba(255,255,255,.55);
+      cursor: grab;
+    }
+    #tb:active { cursor: grabbing; }
+    .tb-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    @media (max-width: 760px) {
+      .trackball { display: none !important; }
+      .wrap { flex-wrap: wrap; }
+      nav.top-menu { margin-left: 0; margin-top: 10px; }
     }
   </style>
-
-  <!-- Leaflet (2D) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <link rel="icon" href="logo.jpeg" />
 </head>
 <body>
-  <!-- Barra superior con marca en colores del logo -->
   <header>
     <div class="wrap">
-      <div class="brand">
-        <img src="logo.jpeg" alt="AUR ESAL" />
-        <span>Fundación Agua y Urbanismo — AUR ESAL</span>
+      <div class="logo-container">
+        <img src="./images/logo-fundacion.png" alt="Fundación Agua y Urbanismo - Abrir Panel" id="open-drawer" title="Abrir Panel">
+        <span style="font-weight: 800; font-size: 1.1rem;">Aurea visor</span>
       </div>
-      <div class="grow"></div>
-      <button id="btn-osm" class="btn" title="OpenStreetMap">OSM</button>
-      <button id="btn-positron" class="btn" title="CARTO Positron" style="margin-left:6px">CARTO</button>
-      <button id="btn-esri" class="btn" title="Esri Satélite" style="margin-left:6px">Satélite</button>
-      <button id="btn-reset" class="btn" title="Volver a inicio" style="margin-left:6px">Inicio</button>
+
+      <nav class="top-menu">
+        <button id="btn-nosotros" class="dropdown-btn">Nosotros</button>
+        <div class="dropdown" id="territorios-dropdown">
+          <button class="dropdown-btn">Territorios</button>
+          <div class="dropdown-content">
+            <a href="#">Guican</a>
+          </div>
+        </div>
+        <div class="dropdown" id="planes-dropdown">
+          <button class="dropdown-btn">Planes</button>
+          <div class="dropdown-content">
+            <a href="#">Güicán</a>
+            <a href="#">El Cocuy</a>
+            <a href="#">Guacamayas</a>
+            <a href="#">Ventaquemada</a>
+          </div>
+        </div>
+        <a href="https://1drv.ms/f/c/3b68856d674ce888/EojoTGdthWgggDvZsQEAAAABzX3aHlPfFDT-tzfKIPRhJg?e=NUbLYr" target="_blank">Proyectos</a>
+        <a href="tienda.html">Tienda</a>
+        <a href="donar.html">Donar</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Visor (pantalla principal) -->
-  <div id="map" aria-label="Visor principal"></div>
-  <div class="legend" aria-label="Leyenda">
-    <div><span class="dot" style="background:var(--azul)"></span>Mapa base</div>
-    <div><span class="dot" style="background:var(--verde)"></span>Capas AUR (próximas)</div>
-  </div>
+  <main id="visor">
+    <div id="shell">
+      <div id="map" aria-label="Mapa 2D"></div>
+      <div id="map3d" aria-label="Mapa 3D"></div>
+      <div class="loading" id="loading">Cargando…</div>
+      <div class="toolbar">
+        <div class="row">
+          <button id="btn2d" class="btn active">2D</button>
+          <button id="btn3d" class="btn">3D</button>
+        </div>
+        <button id="btn-draw" class="btn" title="Dibujar/editar">✏️ Dibujar</button>
+        <button id="btn-measure" class="btn" title="Medir">📏 Medir</button>
+        <button id="btn-reset" class="btn" title="Restablecer">🔄 Reset</button>
+        <button id="share-link" class="btn" title="Copiar enlace">🔗 Compartir</button>
+        <input id="search-input" class="input" placeholder="🔍 Buscar (Enter)" />
+      </div>
+      <div class="layer-menu" id="layer-menu-3d">
+        <button class="toggle-btn" title="Mapas base 3D">⚙️</button>
+        <div class="dropdown" id="layer-dropdown">
+          <div class="option active" data-layer="osm">🌍 OpenStreetMap</div>
+          <div class="option" data-layer="hot">⛑️ OSM Humanitario</div>
+          <div class="option" data-layer="opentopo">⛰️ OpenTopoMap</div>
+          <div class="option" data-layer="esri">🛰️ Esri Satélite</div>
+          <div class="option" data-layer="none">➖ Sin mapa base</div>
+        </div>
+      </div>
+      <div class="hud" id="hud">🗺️ 2D — lat: –, lng: –, z: –</div>
+      <aside class="drawer" id="drawer">
+        <div class="head">
+          <strong>Panel</strong>
+          <button class="btn" id="close-drawer">✖</button>
+        </div>
+        <div class="content">
+          <div class="tabs">
+            <button class="tab active" data-tab="capas">Capas</button>
+            <button class="tab" data-tab="leyenda">Leyenda</button>
+            <button class="tab" data-tab="buscar">Buscar</button>
+            <button class="tab" data-tab="capas-locales">Capas locales</button>
+          </div>
+          <div class="panel active" id="panel-capas">
+            <label>Mapa base (2D)</label>
+            <div class="toggle"><input type="radio" name="basemap" value="osm" checked id="bm-osm"><label for="bm-osm">🌍 OpenStreetMap</label></div>
+            <div class="toggle"><input type="radio" name="basemap" value="hot" id="bm-hot"><label for="bm-hot">⛑️ OSM Humanitario</label></div>
+            <div class="toggle"><input type="radio" name="basemap" value="opentopo" id="bm-opentopo"><label for="bm-opentopo">⛰️ OpenTopoMap</label></div>
+            <div class="toggle"><input type="radio" name="basemap" value="esri" id="bm-esri"><label for="bm-esri">🛰️ Esri Satélite</label></div>
+            <div class="toggle"><input type="radio" name="basemap" value="none" id="bm-none"><label for="bm-none">➖ Sin base</label></div>
+            <label style="margin-top:10px">Overlays (WMS)</label>
+            <div class="toggle">
+              <input type="checkbox" id="ovl-worldcover" checked>
+              <label for="ovl-worldcover">🌐 ESA WorldCover 2021</label>
+            </div>
+            <div class="toggle">
+              <input type="checkbox" id="ovl-firms" checked>
+              <label for="ovl-firms">🔥 NASA FIRMS 24h</label>
+            </div>
+            <div class="coord" id="coord">Lat: –, Lon: –</div>
+          </div>
+          <div class="panel" id="panel-leyenda">
+            <div class="legend">
+              <div><span class="k" style="background:#2ecc71"></span>Áreas verdes</div>
+              <div><span class="k" style="background:#f1c40f"></span>Zonas de intervención</div>
+              <strong style="margin-top:8px">ESA WorldCover</strong>
+              <div><span class="k" style="background:#27ae60"></span>Bosque</div>
+              <div><span class="k" style="background:#8d6e63"></span>Suelo desnudo</div>
+              <div><span class="k" style="background:#2980b9"></span>Agua</div>
+              <strong style="margin-top:8px">NASA FIRMS</strong>
+              <div><span class="k" style="background:#e74c3c"></span>Incendios (24h)</div>
+              <div><span class="k" style="background:#e67e22"></span>Incendios (48h)</div>
+            </div>
+          </div>
+          <div class="panel" id="panel-buscar">
+            <label>🔍 Buscar ubicación</label>
+            <input type="text" id="search-input-panel" class="input" placeholder="Ej: Tunja, Duitama, Sogamoso"/>
+            <div class="coord small" id="share-help">Presione Enter para buscar · Usa Nominatim</div>
+            <div style="margin-top:12px">
+              <label>🔗 Compartir vista actual</label>
+              <button class="btn" id="share-link-panel" style="width:100%">📋 Copiar enlace</button>
+              <div id="share-status" class="small" style="margin-top:8px;text-align:center;"></div>
+            </div>
+          </div>
+          <div class="panel" id="panel-capas-locales">
+            <p>Selecciona un municipio desde el menú "Planes" para cargar sus capas.</p>
+            <div id="capas-locales-contenido"></div>
+          </div>
+        </div>
+      </aside>
+      <div class="trackball" id="tbbox" aria-label="Control de rotación 3D">
+        <canvas id="tb" width="160" height="160" title="Arrastra para rotar 360°"></canvas>
+        <div class="tb-row">
+          <button id="tb-north" class="btn">Norte ↑</button>
+          <button id="tb-reset" class="btn">Reset</button>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <script>
-    // Vista inicial (Boyacá aprox.) — se muestra el visor de inmediato
-    const START = { lat: 5.54, lng: -73.36, zoom: 13 };
+    document.addEventListener('DOMContentLoaded', function () {
+      const $ = (s, ctx = document) => ctx.querySelector(s);
+      const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+      const loading = $('#loading'), hud = $('#hud');
 
-    // Capas base
-    const base = {
-      osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-      }),
-      positron: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OSM & CARTO', subdomains:'abcd', maxZoom: 20
-      }),
-      esri: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; Esri'
-      })
-    };
+      // Modal "Nosotros"
+      const modalNosotros = $('#modal-nosotros');
+      const btnNosotros = $('#btn-nosotros');
+      const btnCerrarModal = $('#cerrar-modal');
+      if (btnNosotros && modalNosotros && btnCerrarModal) {
+        btnNosotros.addEventListener('click', (e) => {
+          e.stopPropagation();
+          modalNosotros.style.display = 'flex';
+        });
+        btnCerrarModal.addEventListener('click', () => {
+          modalNosotros.style.display = 'none';
+        });
+        modalNosotros.addEventListener('click', (e) => {
+          if (e.target === modalNosotros) modalNosotros.style.display = 'none';
+        });
+      }
 
-    // Mapa 2D (portada)
-    const map = L.map('map', {
-      center:[START.lat, START.lng], zoom: START.zoom, layers:[base.positron]
+      // Visor 2D
+      const map = L.map('map', { preferCanvas: true, zoomControl: false, attributionControl: false });
+      const start = [6.467, -72.416];
+      map.setView(start, 12);
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      const attrCtrl = L.control.attribution({ prefix: false }).addAttribution('© OpenStreetMap contributors');
+      attrCtrl.addTo(map);
+
+      const basemaps = {
+        osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, subdomains: 'abc' }),
+        hot: L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { maxZoom: 19, subdomains: 'abc' }),
+        opentopo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17, subdomains: 'abc' }),
+        esri: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 }),
+        none: L.tileLayer('', {})
+      };
+      let currentBase = 'osm';
+      basemaps[currentBase].addTo(map);
+
+      const overlays = {
+        worldcover: L.tileLayer.wms('https://tiles.maps.eox.at/wms', {
+          layers: 'worldcover',
+          format: 'image/png',
+          transparent: true,
+          opacity: 0.55,
+          version: '1.3.0'
+        }),
+        firms: L.tileLayer.wms('https://firms.modaps.eosdis.nasa.gov/mapserver/wms_viirs_suomi', {
+          layers: 'fires_viirs_24',
+          format: 'image/png',
+          transparent: true,
+          opacity: 0.75,
+          version: '1.3.0'
+        })
+      };
+      overlays.worldcover.addTo(map);
+      overlays.firms.addTo(map);
+      attrCtrl.addAttribution('ESA WorldCover 2021 · NASA FIRMS (VIIRS)');
+
+      const chkWC = $('#ovl-worldcover');
+      const chkF = $('#ovl-firms');
+      function syncOverlay(chk, layer) {
+        if (chk.checked) {
+          if (!map.hasLayer(layer)) layer.addTo(map);
+        } else {
+          if (map.hasLayer(layer)) map.removeLayer(layer);
+        }
+      }
+      chkWC.addEventListener('change', () => syncOverlay(chkWC, overlays.worldcover));
+      chkF.addEventListener('change', () => syncOverlay(chkF, overlays.firms));
+
+      function syncHUD2D() {
+        const c = map.getCenter();
+        hud.textContent = `🗺️ 2D — lat: ${c.lat.toFixed(5)}, lng: ${c.lng.toFixed(5)}, z: ${map.getZoom().toFixed(2)}`;
+      }
+      map.on('move zoom', syncHUD2D);
+      syncHUD2D();
+
+      const coordEl = $('#coord');
+      map.on('mousemove', (e) => coordEl.textContent = `Lat: ${e.latlng.lat.toFixed(5)}, Lon: ${e.latlng.lng.toFixed(5)}`);
+
+      map.pm.addControls({ position: 'topleft', drawMarker: true, drawPolyline: true, drawPolygon: true, editMode: true, dragMode: true, cutPolygon: true, removalMode: true });
+      $('#btn-draw').addEventListener('click', () => map.pm.toggleControls());
+
+      let measuring = false, measureLine = null, pts = [], measureTooltip = null;
+      function fmt(m) { return m < 1000 ? `${m.toFixed(1)} m` : `${(m / 1000).toFixed(2)} km`; }
+      function stopMeasure() {
+        measuring = false;
+        if (measureLine) map.removeLayer(measureLine);
+        if (measureTooltip) map.removeLayer(measureTooltip);
+        map.off('click', onClick);
+        map.off('mousemove', onMove);
+        map.off('dblclick', onEnd);
+        $('#btn-measure').textContent = '📏 Medir';
+        pts = [];
+      }
+      function onClick(e) {
+        pts.push(e.latlng);
+        measureLine.setLatLngs(pts);
+        if (pts.length > 1) {
+          const total = map.distance(pts[0], pts[pts.length - 1]);
+          if (!measureTooltip) measureTooltip = L.tooltip({ className: 'custom-tooltip', offset: [0, -20] });
+          measureTooltip.setLatLng(e.latlng).setContent(`📏 Distancia: <strong>${fmt(total)}</strong>`).addTo(map);
+        }
+      }
+      function onMove(e) { if (pts.length) measureLine.setLatLngs([...pts, e.latlng]); }
+      function onEnd() {
+        if (pts.length > 1) {
+          const total = map.distance(pts[0], pts[pts.length - 1]);
+          alert(`✅ Medición Finalizada\nDistancia total: ${fmt(total)}`);
+        }
+        stopMeasure();
+      }
+      $('#btn-measure').addEventListener('click', () => {
+        if (measuring) { stopMeasure(); return; }
+        measuring = true;
+        measureLine = L.polyline([], { color: '#3b82f6', weight: 4, opacity: .9, dashArray: '5,5' }).addTo(map);
+        map.on('click', onClick);
+        map.on('mousemove', onMove);
+        map.on('dblclick', onEnd);
+        $('#btn-measure').textContent = '⏹️ Finalizar';
+      });
+
+      $$('input[name="basemap"]').forEach(r => r.addEventListener('change', () => {
+        Object.values(basemaps).forEach(l => { if (map.hasLayer(l)) map.removeLayer(l); });
+        basemaps[r.value].addTo(map);
+        currentBase = r.value;
+        if (glmap) change3DBasemap(currentBase);
+        updateHash();
+      }));
+
+      let lastQueryAt = 0;
+      $('#search-input').addEventListener('keydown', async (ev) => {
+        if (ev.key !== 'Enter') return;
+        const now = Date.now();
+        if (now - lastQueryAt < 1200) return;
+        lastQueryAt = now;
+        const q = ev.target.value.trim();
+        if (!q) return;
+        try {
+          loading.classList.add('active');
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`;
+          const res = await fetch(url, { headers: { 'Accept-Language': 'es' } });
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            const { lat, lon, display_name } = data[0];
+            map.flyTo([+lat, +lon], 14, { duration: 1.2 });
+            L.marker([+lat, +lon]).addTo(map).bindPopup(`<b>📍 ${display_name}</b>`).openPopup();
+          }
+        } catch (e) { console.error(e); } finally { loading.classList.remove('active'); }
+      });
+      $('#search-input-panel').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          $('#search-input').value = e.target.value;
+          $('#search-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+        }
+      });
+
+      function updateHash() {
+        const c = map.getCenter(), z = map.getZoom();
+        const wc = map.hasLayer(overlays.worldcover) ? 1 : 0;
+        const ff = map.hasLayer(overlays.firms) ? 1 : 0;
+        location.hash = `#2d/${z.toFixed(2)}/${c.lat.toFixed(5)}/${c.lng.toFixed(5)}/${currentBase}/${wc}/${ff}`;
+      }
+      map.on('moveend', updateHash);
+      function copyLink(targetBtn) {
+        updateHash();
+        navigator.clipboard.writeText(location.href).then(() => {
+          targetBtn.textContent = '✅ Copiado';
+          setTimeout(() => targetBtn.textContent = targetBtn.id === 'share-link' ? '🔗 Compartir' : '📋 Copiar enlace', 1500);
+          const ss = $('#share-status');
+          if (ss) {
+            ss.textContent = 'Enlace copiado al portapapeles.';
+            setTimeout(() => ss.textContent = '', 1800);
+          }
+        });
+      }
+      $('#share-link').addEventListener('click', () => copyLink($('#share-link')));
+      $('#share-link-panel').addEventListener('click', () => copyLink($('#share-link-panel')));
+
+      (function restoreFromHash() {
+        const h = location.hash.slice(1).split('/');
+        if (h.length >= 5) {
+          const z = parseFloat(h[1]), lat = parseFloat(h[2]), lon = parseFloat(h[3]), bm = h[4];
+          const wcFlag = h[5] !== undefined ? parseInt(h[5], 10) : 1;
+          const fFlag = h[6] !== undefined ? parseInt(h[6], 10) : 1;
+          if (!isNaN(z) && !isNaN(lat) && !isNaN(lon)) map.setView([lat, lon], z);
+          if (basemaps[bm]) {
+            Object.values(basemaps).forEach(l => { if (map.hasLayer(l)) map.removeLayer(l); });
+            basemaps[bm].addTo(map);
+            currentBase = bm;
+            const r = $(`input[name="basemap"][value="${bm}"]`);
+            if (r) r.checked = true;
+          }
+          if (wcFlag) {
+            overlays.worldcover.addTo(map);
+            $('#ovl-worldcover').checked = true;
+          } else {
+            if (map.hasLayer(overlays.worldcover)) map.removeLayer(overlays.worldcover);
+            $('#ovl-worldcover').checked = false;
+          }
+          if (fFlag) {
+            overlays.firms.addTo(map);
+            $('#ovl-firms').checked = true;
+          } else {
+            if (map.hasLayer(overlays.firms)) map.removeLayer(overlays.firms);
+            $('#ovl-firms').checked = false;
+          }
+        }
+      })();
+
+      // Visor 3D
+      const map3d = $('#map3d');
+      let glmap = null;
+      let is3D = false;
+      const terrainDEM = {
+        type: 'raster-dem',
+        tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
+        tileSize: 256,
+        encoding: 'terrarium'
+      };
+      const maplibreSourceDefs = {
+        osm: { type: 'raster', tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', 'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png', 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'], tileSize: 256 },
+        hot: { type: 'raster', tiles: ['https://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 'https://b.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 'https://c.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'], tileSize: 256 },
+        opentopo: { type: 'raster', tiles: ['https://a.tile.opentopomap.org/{z}/{x}/{y}.png', 'https://b.tile.opentopomap.org/{z}/{x}/{y}.png', 'https://c.tile.opentopomap.org/{z}/{x}/{y}.png'], tileSize: 256 },
+        esri: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256 },
+        none: { type: 'raster', tiles: [], tileSize: 256 }
+      };
+
+      function ensure3D() {
+        if (glmap) return;
+        const c = map.getCenter(), z = map.getZoom();
+        glmap = new maplibregl.Map({
+          container: 'map3d',
+          style: { version: 8, sources: { terrainRGB: terrainDEM }, layers: [] },
+          center: [c.lng, c.lat],
+          zoom: z,
+          pitch: 55,
+          bearing: 0,
+          antialias: true
+        });
+        glmap.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-right');
+        glmap.addControl(new maplibregl.ScaleControl({}), 'bottom-left');
+        glmap.on('load', () => {
+          glmap.setTerrain({ source: 'terrainRGB', exaggeration: 1.1 });
+          document.dispatchEvent(new Event('glmap-ready'));
+        });
+        glmap.on('move', () => {
+          const c = glmap.getCenter();
+          hud.textContent = `⛰️ 3D — lat: ${c.lat.toFixed(5)}, lng: ${c.lng.toFixed(5)}, z: ${glmap.getZoom().toFixed(2)}, brg: ${Math.round((glmap.getBearing() % 360 + 360) % 360)}, pitch: ${Math.round(glmap.getPitch())}`;
+        });
+      }
+
+      function change3DBasemap(key) {
+        if (!glmap || !glmap.getStyle()) return;
+        try {
+          if (glmap.getLayer('baser')) glmap.removeLayer('baser');
+          if (glmap.getSource('basesrc')) glmap.removeSource('basesrc');
+          if (key !== 'none') {
+            glmap.addSource('basesrc', maplibreSourceDefs[key]);
+            glmap.addLayer({ id: 'baser', type: 'raster', source: 'basesrc' });
+          }
+        } catch (e) { console.error(e); }
+      }
+
+      function show2D() {
+        $('#map').style.display = 'block';
+        map3d.style.display = 'none';
+        is3D = false;
+        $('#btn2d').classList.add('active');
+        $('#btn3d').classList.remove('active');
+        $('.layer-menu .toggle-btn').style.display = 'none';
+        $('#tbbox').style.display = 'none';
+        setTimeout(() => map.invalidateSize(), 250);
+        syncHUD2D();
+      }
+
+      function show3D() {
+        ensure3D();
+        const c = map.getCenter(), z = map.getZoom();
+        const apply = () => {
+          change3DBasemap(currentBase);
+          glmap.jumpTo({ center: [c.lng, c.lat], zoom: z, pitch: 55 });
+        };
+        if (glmap.isStyleLoaded()) apply(); else glmap.once('load', apply);
+        $('#map').style.display = 'none';
+        map3d.style.display = 'block';
+        is3D = true;
+        $('#btn2d').classList.remove('active');
+        $('#btn3d').classList.add('active');
+        $('.layer-menu .toggle-btn').style.display = 'flex';
+        $('#tbbox').style.display = 'block';
+        setTimeout(() => glmap.resize(), 250);
+      }
+
+      $('#btn2d').addEventListener('click', show2D);
+      $('#btn3d').addEventListener('click', show3D);
+
+      const layerToggleBtn = $('.layer-menu .toggle-btn');
+      const layerDropdown = $('#layer-dropdown');
+      layerToggleBtn.addEventListener('click', (e) => { e.stopPropagation(); layerDropdown.classList.toggle('active'); });
+      $$('.layer-dropdown .option').forEach(opt => opt.addEventListener('click', (e) => {
+        const key = e.target.dataset.layer;
+        change3DBasemap(key);
+        const r = $(`input[name="basemap"][value="${key}"]`);
+        if (r) r.checked = true;
+        layerDropdown.classList.remove('active');
+      }));
+      document.addEventListener('click', (e) => {
+        if (!layerDropdown.contains(e.target) && e.target !== layerToggleBtn) {
+          layerDropdown.classList.remove('active');
+        }
+      });
+
+      $('#btn-reset').addEventListener('click', () => {
+        map.flyTo(start, 12, { duration: 1.0 });
+        if (glmap) {
+          glmap.easeTo({ center: [start[1], start[0]], zoom: 12, pitch: 55, bearing: 0, duration: 800 });
+        }
+      });
+
+      const tb = $('#tb');
+      const tbc = tb.getContext('2d');
+      let tbActive = false, lastX = 0, lastY = 0;
+      function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+      function wrap360(v) { return (v % 360 + 360) % 360; }
+      function drawTB() {
+        const w = tb.width, h = tb.height, r = w / 2;
+        tbc.clearRect(0, 0, w, h);
+        tbc.save();
+        tbc.translate(r, r);
+        const bearing = glmap ? glmap.getBearing() : 0;
+        const pitch = glmap ? glmap.getPitch() : 55;
+        tbc.strokeStyle = 'rgba(21,62,117,.45)';
+        tbc.lineWidth = 1.5;
+        tbc.beginPath(); tbc.arc(0, 0, r - 3, 0, Math.PI * 2); tbc.stroke();
+        tbc.beginPath(); tbc.ellipse(0, 0, r - 10, (r - 10) * Math.cos(pitch * Math.PI / 180), 0, 0, Math.PI * 2); tbc.stroke();
+        tbc.rotate(-bearing * Math.PI / 180);
+        tbc.beginPath(); tbc.ellipse(0, 0, (r - 10) * Math.cos(pitch * Math.PI / 180), r - 10, 0, 0, Math.PI * 2); tbc.stroke();
+        tbc.fillStyle = 'rgba(10,132,255,.9)';
+        tbc.beginPath(); tbc.arc(0, -(r - 12), 4, 0, Math.PI * 2); tbc.fill();
+        tbc.restore();
+      }
+      function setBearingPitch(b, p) {
+        if (!glmap) return;
+        glmap.easeTo({ bearing: wrap360(b), pitch: clamp(p, 0, 80), duration: 0 });
+        drawTB();
+      }
+
+      tb.addEventListener('pointerdown', e => {
+        if (!is3D || !glmap) return;
+        tbActive = true;
+        const r = tb.getBoundingClientRect();
+        lastX = e.clientX - r.left;
+        lastY = e.clientY - r.top;
+        tb.setPointerCapture(e.pointerId || 1);
+      });
+      tb.addEventListener('pointermove', e => {
+        if (!tbActive || !glmap) return;
+        const r = tb.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const dx = x - lastX, dy = y - lastY;
+        lastX = x; lastY = y;
+        setBearingPitch(glmap.getBearing() + (dx * 180 / 120), glmap.getPitch() - (dy * 90 / 120));
+      });
+      window.addEventListener('pointerup', () => tbActive = false);
+      $('#tb-north').addEventListener('click', () => setBearingPitch(0, glmap ? glmap.getPitch() : 55));
+      $('#tb-reset').addEventListener('click', () => {
+        if (!glmap) return;
+        const c = glmap.getCenter();
+        glmap.easeTo({ center: [c.lng, c.lat], bearing: 0, pitch: 55, duration: 250 });
+        drawTB();
+      });
+
+      document.addEventListener('glmap-ready', () => glmap.on('move', drawTB));
+
+      // Funcionalidad del logo como botón
+      $('#open-drawer').addEventListener('click', () => $('#drawer').classList.add('open'));
+      $('#close-drawer').addEventListener('click', () => $('#drawer').classList.remove('open'));
+
+      // Tabs del panel
+      $$('.tab').forEach(tab => tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        $$('.tab').forEach(t => t.classList.remove('active'));
+        $$('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        $(`#panel-${target}`).classList.add('active');
+      }));
+
+      // Dropdowns
+      function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+          dropdown.classList.remove('active');
+        });
+      }
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown')) {
+          closeAllDropdowns();
+        }
+      });
+      document.getElementById('territorios-dropdown').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('planes-dropdown').classList.remove('active');
+        document.getElementById('territorios-dropdown').classList.toggle('active');
+      });
+      document.getElementById('planes-dropdown').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('territorios-dropdown').classList.remove('active');
+        document.getElementById('planes-dropdown').classList.toggle('active');
+      });
+
+      // === CAPAS POR MUNICIPIO ===
+      const municipiosNombres = {
+        'Güicán': 'guican',
+        'El Cocuy': 'el_cocuy',
+        'Guacamayas': 'guacamayas',
+        'Ventaquemada': 'ventaquemada'
+      };
+
+      const capasLocales = {};
+
+      function cargarCapasMunicipio(nombreMostrado) {
+        const nombreTecnico = municipiosNombres[nombreMostrado];
+        if (!nombreTecnico) return;
+
+        $('#drawer').classList.add('open');
+
+        $$('.tab').forEach(t => t.classList.remove('active'));
+        $(`[data-tab="capas-locales"]`).classList.add('active');
+
+        $$('.panel').forEach(p => p.classList.remove('active'));
+        $('#panel-capas-locales').classList.add('active');
+
+        const contenedor = $('#capas-locales-contenido');
+        contenedor.innerHTML = `<h4>Capas: ${nombreMostrado}</h4>`;
+
+        for (let i = 1; i <= 10; i++) {
+          const idCheck = `local-${nombreTecnico}-${i}`;
+          const div = document.createElement('div');
+          div.className = 'toggle';
+          div.innerHTML = `
+            <input type="checkbox" id="${idCheck}" data-mun="${nombreTecnico}" data-num="${i}">
+            <label for="${idCheck}">Capa ${i}</label>
+            <input type="range" min="0" max="1" step="0.05" value="0.7" id="${idCheck}-opacity" disabled style="margin-left:10px; width:100px;">
+          `;
+          contenedor.appendChild(div);
+
+          const chk = $(`#${idCheck}`);
+          const range = $(`#${idCheck}-opacity`);
+
+          chk.addEventListener('change', () => {
+            range.disabled = !chk.checked;
+            toggleCapaLocal(nombreTecnico, i, chk.checked, parseFloat(range.value));
+          });
+
+          range.addEventListener('input', () => {
+            if (capasLocales[`${nombreTecnico}-${i}`]) {
+              capasLocales[`${nombreTecnico}-${i}`].setOpacity(parseFloat(range.value));
+            }
+          });
+        }
+      }
+
+      function toggleCapaLocal(mun, num, activar, opacidad = 0.7) {
+        const key = `${mun}-${num}`;
+        const url = `./datos/${mun}/capa${num}.geojson`;
+
+        if (activar) {
+          fetch(url)
+            .then(res => {
+              if (!res.ok) throw new Error(`404: ${url}`);
+              return res.json();
+            })
+            .then(data => {
+              const lyr = L.geoJSON(data, {
+                style: {
+                  color: '#d32f2f',
+                  weight: 2,
+                  fillColor: '#ff6b6b',
+                  fillOpacity: opacidad
+                },
+                onEachFeature: (f, l) => {
+                  if (f.properties) {
+                    let html = '<table style="font-size:0.9em;">';
+                    for (let k in f.properties) {
+                      html += `<tr><td><b>${k}:</b></td><td>${f.properties[k]}</td></tr>`;
+                    }
+                    html += '</table>';
+                    l.bindPopup(html);
+                  }
+                }
+              });
+              lyr.addTo(map);
+              capasLocales[key] = lyr;
+            })
+            .catch(err => {
+              console.warn(`Capa no encontrada: ${url}`);
+              const chk = $(`#local-${mun}-${num}`);
+              if (chk) chk.checked = false;
+            });
+        } else {
+          if (capasLocales[key]) {
+            map.removeLayer(capasLocales[key]);
+            delete capasLocales[key];
+          }
+        }
+      }
+
+      $$('[id="planes-dropdown"] .dropdown-content a').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const texto = a.textContent.trim();
+          if (municipiosNombres[texto]) {
+            cargarCapasMunicipio(texto);
+          }
+        });
+      });
+
+      loading.classList.remove('active');
     });
-    L.control.scale({imperial:false}).addTo(map);
-
-    // Botones de cabecera (cambian base y hacen “pantallazo” inicial de inmediato)
-    document.getElementById('btn-osm').onclick      = ()=> setBase(base.osm);
-    document.getElementById('btn-positron').onclick = ()=> setBase(base.positron);
-    document.getElementById('btn-esri').onclick     = ()=> setBase(base.esri);
-    document.getElementById('btn-reset').onclick    = ()=> map.setView([START.lat, START.lng], START.zoom);
-
-    function setBase(layer){
-      Object.values(base).forEach(l=>{ if(map.hasLayer(l)) map.removeLayer(l); });
-      layer.addTo(map);
-    }
-
-    // Marcador de bienvenida con colores del logo
-    const popupHTML = `
-      <div style="font-weight:700;color:#06110a;background:linear-gradient(90deg,var(--azul),var(--verde));padding:6px 10px;border-radius:8px">
-        Áurea · Visor AUR ESAL
-      </div>
-      <div style="margin-top:6px;color:var(--tinta)">Mapa inicial en los tonos del logo.</div>`;
-    L.marker([START.lat, START.lng]).addTo(map).bindPopup(popupHTML).openPopup();
   </script>
+
+  <!-- Modal "Nosotros" -->
+  <div id="modal-nosotros" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
+    <div style="background:white; padding:24px; border-radius:12px; max-width:600px; width:90%; box-shadow:0 8px 24px rgba(0,0,0,0.3); position:relative;">
+      <h2 style="margin-top:0; color:#0a7bc2;">Nosotros</h2>
+      <p style="line-height:1.6; color:#333;">
+        Fundación Agua y Urbanismo – AUR ESAL es una entidad sin ánimo de lucro con sede en Colombia, creada para promover el desarrollo de ciudades y territorios sostenibles, resilientes y justos.
+      </p>
+      <button id="cerrar-modal" style="background:#0a7bc2; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-top:16px;">
+        Cerrar
+      </button>
+    </div>
+  </div>
 </body>
 </html>
+Actualización funcional de index.html con enlaces y estilos
