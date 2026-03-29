@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURESAL - Transparencia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background: #f8f9fa; }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 2rem; margin-bottom: 10px; }
+        
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        .intro {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .transparency-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .transparency-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        
+        .transparency-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .transparency-card p, .transparency-card li { color: #666; }
+        
+        .transparency-card ul { margin-left: 25px; }
+        
+        .transparency-card li { margin: 8px 0; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th { background: #3498db; color: white; }
+        
+        tr:hover { background: #f8f9fa; }
+        
+        .download-link {
+            color: #27ae60;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        .download-link:hover { text-decoration: underline; }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 Transparencia</h1>
+        <a href="index.html" class="back-btn">← Volver al Inicio</a>
+    </div>
+    
+    <div class="container">
+        <div class="intro">
+            <h2>Rendición de Cuentas</h2>
+            <p>Comprometidos con la transparencia en la gestión de recursos</p>
+        </div>
+        
+        <div class="transparency-card">
+            <div class="icon">📋</div>
+            <h3>Contratación Pública</h3>
+            <p>Seguimiento a contratación pública celebrada por la Fundación</p>
+            <table>
+                <tr>
+                    <th>Contrato</th>
+                    <th>Objeto</th>
+                    <th>Valor</th>
+                    <th>Estado</th>
+                </tr>
+                <tr>
+                    <td>2025-001</td>
+                    <td>Consultoría EOT Guacamayas</td>
+                    <td>$150.000.000</td>
+                    <td>En ejecución</td>
+                </tr>
+                <tr>
+                    <td>2024-003</td>
+                    <td>Estudio geológico Ventaquemada</td>
+                    <td>$45.000.000</td>
+                    <td>Finalizado</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="transparency-card">
+            <div class="icon">💝</div>
+            <h3>Donaciones</h3>
+            <p>La Fundación recibe donaciones de entidades públicas, privadas y personas naturales.</p>
+            <ul>
+                <li>Donaciones en efectivo</li>
+                <li>Donaciones en especie (equipos, software)</li>
+                <li>Apoyos institucionales</li>
+            </ul>
+        </div>
+        
+        <div class="transparency-card">
+            <div class="icon">📊</div>
+            <h3>Destinación de Donaciones</h3>
+            <ul>
+                <li>Investigación aplicada en ordenamiento territorial</li>
+                <li>Capacitación gratuita a municipios de bajos recursos</li>
+                <li>Desarrollo de herramientas geoespaciales abiertas</li>
+                <li>Publicación de materiales educativos</li>
+            </ul>
+        </div>
+        
+        <div class="transparency-card">
+            <div class="icon">📈</div>
+            <h3>Balances Financieros</h3>
+            <p>Informes financieros anuales auditados</p>
+            <a href="#" class="download-link">📥 Descargar Balance 2024 (PDF)</a><br>
+            <a href="#" class="download-link">📥 Descargar Balance 2023 (PDF)</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>📧 frasserzambrano@gmail.com • 📱 +57 314 442 9234</p>
+        <p>© 2025 Fundación Agua y Urbanismo – AURESAL</p>
+    </div>
+</body>
+</html>
