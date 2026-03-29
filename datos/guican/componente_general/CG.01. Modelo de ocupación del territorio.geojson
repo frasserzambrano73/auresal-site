@@ -1,0 +1,15 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "CG.01. Modelo de ocupación del territorio.geojson"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-72.42,6.46],[-72.41,6.46],[-72.41,6.47],[-72.42,6.47],[-72.42,6.46]]]
+      }
+    }
+  ]
+}
