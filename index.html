@@ -527,7 +527,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 </head>
 <body>
   <div class="promo-banner">
-    🏗️ Visor de la Fundación Urbanismo y Territorio
+    🏗️ Geoportal de la Fundación Urbanismo y Territorio
     <a href="tienda.html">Ver servicios</a> •
     <a href="donar.html">Apoya nuestro trabajo</a>
   </div>
@@ -616,19 +616,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
             </div>
             <div class="coord" id="coord">Lat: –, Lon: –<br><small style="color:var(--muted);">Sin ubicación</small></div>
             <button id="copy-coords" class="btn" style="margin-top:6px; width:100%; font-size:0.85rem;">📋 Copiar coordenadas</button>
-          </div>
-          <div class="panel" id="panel-leyenda">
-            <div class="legend">
-              <div><span class="k" style="background:#2ecc71"></span>Áreas verdes</div>
-              <div><span class="k" style="background:#f1c40f"></span>Zonas de intervención</div>
-              <strong style="margin-top:8px">ESA WorldCover</strong>
-              <div><span class="k" style="background:#27ae60"></span>Bosque</div>
-              <div><span class="k" style="background:#8d6e63"></span>Suelo desnudo</div>
-              <div><span class="k" style="background:#2980b9"></span>Agua</div>
-              <strong style="margin-top:8px">NASA FIRMS</strong>
-              <div><span class="k" style="background:#e74c3c"></span>Incendios (24h)</div>
-              <div><span class="k" style="background:#e67e22"></span>Incendios (48h)</div>
-            </div>
           </div>
           <div class="panel" id="panel-buscar">
             <label>🔍 Buscar ubicación</label>
@@ -872,7 +859,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 
       // === CAPAS REALES DE GÜICÁN ===
       const capasRealesGuican = [
-        { nombre: "CG.01. Modelo de ocupación del territorio", ruta: "./datos/guican/componente_general/CG.01. Modelo de ocupación del territorio.geojson" },
+        { nombre: "CG_01_Modelo_de_ocupacion_del_territorio", ruta: "./datos/guican/componente_general/CG_01_Modelo_de_ocupacion_del_territorio.geojson" },
         { nombre: "CG.02. Clasificación del suelo", ruta: "./datos/guican/componente_general/CG.02. Clasificación del suelo.geojson" },
         { nombre: "CG.03. Suelo de protección", ruta: "./datos/guican/componente_general/CG.03. Suelo de protección.geojson" },
         { nombre: "CG.04. Áreas de conservación y protección ambiental", ruta: "./datos/guican/componente_general/CG.04. Áreas de conservación y protección ambiental.geojson" },
