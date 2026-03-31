@@ -26,19 +26,18 @@
   <script defer src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
   <style>
     :root {
-      --primary: #0a74d1;
-      --secondary: #2fb36f;
-      --accent: #f4b400;
-      --bg: #ffffff;
-      --card: #f7fafc;
-      --border: #e2e8f0;
-      --text: #1f2937;
-      --muted: #64748b;
-      --shadow: 0 6px 16px rgba(2,6,23,.06);
+      --agua:#2f6f73;
+    --tierra:#8c5a3c;
+    --arena:#c9a27e;
+    --oscuro:#1f2d3a;
+    --claro:#f4f6f8;
+    --blanco:#ffffff;
+    --gradiente:linear-gradient(135deg, var(--agua), var(--tierra));
       --radius: 16px;
       --radius-lg: 20px;
       --headerH: 64px;
-    }
+}
+
     * { box-sizing: border-box; }
     html, body {
       height: 100%;
@@ -527,9 +526,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 </head>
 <body>
   <div class="promo-banner">
-    🏗️ Visor de la Fundación Urbanismo y Territorio
-    <a href="tienda.html">Ver servicios</a> •
-    <a href="donar.html">Apoya nuestro trabajo</a>
+    🏗️ En construcción: Geovisor de la Fundación Urbanismo y Territorio
   </div>
   <header>
     <div class="wrap">
