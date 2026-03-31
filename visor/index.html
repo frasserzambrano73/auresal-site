@@ -26,18 +26,19 @@
   <script defer src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
   <style>
     :root {
-      --agua:#2f6f73;
-    --tierra:#8c5a3c;
-    --arena:#c9a27e;
-    --oscuro:#1f2d3a;
-    --claro:#f4f6f8;
-    --blanco:#ffffff;
-    --gradiente:linear-gradient(135deg, var(--agua), var(--tierra));
+      --primary: #0a74d1;
+      --secondary: #2fb36f;
+      --accent: #f4b400;
+      --bg: #ffffff;
+      --card: #f7fafc;
+      --border: #e2e8f0;
+      --text: #1f2937;
+      --muted: #64748b;
+      --shadow: 0 6px 16px rgba(2,6,23,.06);
       --radius: 16px;
       --radius-lg: 20px;
       --headerH: 64px;
-}
-
+    }
     * { box-sizing: border-box; }
     html, body {
       height: 100%;
@@ -526,7 +527,9 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 </head>
 <body>
   <div class="promo-banner">
-    🏗️ En construcción: Geovisor de la Fundación Urbanismo y Territorio
+    🏗️ En construcción: Geoisor
+    <a href="tienda.html">Ver servicios</a> •
+    <a href="donar.html">Apoya nuestro trabajo</a>
   </div>
   <header>
     <div class="wrap">
@@ -541,7 +544,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
   </button>
    </div>
       <nav class="top-menu">
-        <a href="../principal/index.html" class="back-btn">← Volver</a>
+        <a href="../index.html" class="back-btn">← Volver</a>
         <button id="btn-nosotros" class="dropdown-btn">Nosotros</button>
         <div class="dropdown" id="urbanismo-dropdown">
           <button class="dropdown-btn">Urbanismo</button>
@@ -590,6 +593,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         <div class="content">
           <div class="tabs">
             <button class="tab active" data-tab="capas">Capas</button>
+            <button class="tab" data-tab="leyenda">Leyenda</button>
             <button class="tab" data-tab="buscar">Buscar</button>
             <button class="tab" data-tab="capas-locales">Capas locales</button>
             <button class="tab" data-tab="geojson">GeoJSON</button>
@@ -874,7 +878,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 
       // === CAPAS REALES DE GÜICÁN ===
       const capasRealesGuican = [
-        { nombre: "CG.01. Modelo de ocupación del territorio", ruta: "./datos/CG_01_Modelo_de_ocupacion_del_territorio.geojson" },
+        { nombre: "CG.01. Modelo de ocupación del territorio", ruta: "./datos/guican/CG.01. Modelo de ocupación del territorio.geojson" },
         { nombre: "CG.02. Clasificación del suelo", ruta: "./datos/guican/CG.02. Clasificación del suelo.geojson" },
         { nombre: "CG.03. Suelo de protección", ruta: "./datos/guican/CG.03. Suelo de protección.geojson" },
         { nombre: "CG.04. Áreas de conservación y protección ambiental", ruta: "./datos/guican/CG.04. Áreas de conservación y protección ambiental.geojson" },
