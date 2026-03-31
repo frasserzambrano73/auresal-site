@@ -26,9 +26,6 @@
   <script defer src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
   <style>
     :root {
-      --agua:#2f6f73;
-      --tierra:#8c5a3c;
-      --gradiente:linear-gradient(135deg, var(--agua), var(--tierra));
       --primary: #0a74d1;
       --secondary: #2fb36f;
       --accent: #f4b400;
@@ -530,6 +527,9 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 </head>
 <body>
   <div class="promo-banner">
+    🏗️ Visor de la Fundación Urbanismo y Territorio
+    <a href="tienda.html">Ver servicios</a> •
+    <a href="donar.html">Apoya nuestro trabajo</a>
   </div>
   <header>
     <div class="wrap">
@@ -544,7 +544,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
   </button>
    </div>
       <nav class="top-menu">
-        <a href="../index.html">← Inicio</a>
         <button id="btn-nosotros" class="dropdown-btn">Nosotros</button>
         <div class="dropdown" id="urbanismo-dropdown">
           <button class="dropdown-btn">Urbanismo</button>
@@ -561,6 +560,9 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
             <a href="#">Ventaquemada</a>
           </div>
         </div>
+        <button id="btn-licencias" class="dropdown-btn" style="background: var(--accent); color: black; font-weight: 700;">Licencias</button>
+        <a href="tienda.html" style="background: var(--accent); color: black; font-weight: bold;">Tienda</a>
+        <a href="donar.html" style="background: #e74c3c; color: white; font-weight: bold;">Donar</a>
       </nav>
     </div>
   </header>
@@ -615,6 +617,19 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
             <div class="coord" id="coord">Lat: –, Lon: –<br><small style="color:var(--muted);">Sin ubicación</small></div>
             <button id="copy-coords" class="btn" style="margin-top:6px; width:100%; font-size:0.85rem;">📋 Copiar coordenadas</button>
           </div>
+          <div class="panel" id="panel-leyenda">
+            <div class="legend">
+              <div><span class="k" style="background:#2ecc71"></span>Áreas verdes</div>
+              <div><span class="k" style="background:#f1c40f"></span>Zonas de intervención</div>
+              <strong style="margin-top:8px">ESA WorldCover</strong>
+              <div><span class="k" style="background:#27ae60"></span>Bosque</div>
+              <div><span class="k" style="background:#8d6e63"></span>Suelo desnudo</div>
+              <div><span class="k" style="background:#2980b9"></span>Agua</div>
+              <strong style="margin-top:8px">NASA FIRMS</strong>
+              <div><span class="k" style="background:#e74c3c"></span>Incendios (24h)</div>
+              <div><span class="k" style="background:#e67e22"></span>Incendios (48h)</div>
+            </div>
+          </div>
           <div class="panel" id="panel-buscar">
             <label>🔍 Buscar ubicación</label>
             <input type="text" id="search-input-panel" class="input" placeholder="Ej: Tunja, Duitama, Sogamoso"/>
@@ -629,6 +644,8 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
             <p>Selecciona un municipio desde el menú "Planes" para cargar sus capas.</p>
             <div id="capas-locales-contenido"></div>
           </div>
+
+          <!-- 📁 PANEL GEOJSON -->
           <div class="panel" id="panel-geojson">
             <label class="btn" for="file-geojson" style="width:100%; text-align:center;">📂 Cargar GeoJSON</label>
             <input id="file-geojson" type="file" accept=".geojson,.json" multiple hidden>
@@ -638,6 +655,27 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
               <button id="export-all-geojson" class="mini" title="Exportar todas las capas como un solo GeoJSON">⬇️ Exportar todo</button>
               <button id="clear-all-geojson" class="mini" title="Quitar todas las capas del mapa">🗑️ Quitar todo</button>
             </div>
+
+            <!-- ✅ NUEVO: Enfocar por URL/Ruta -->
+            <div class="coord" style="margin-top:12px;">
+              <div style="font-weight:600; margin-bottom:6px;">🎯 Enfocar por URL o ruta en el repo</div>
+              <input id="focus-url" class="input" placeholder="./datos/guican/componente_urbano/CU.04. Espacio público.geojson" />
+              <div style="display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap;">
+                <label class="mini" style="display:flex; gap:6px; align-items:center;">
+                  <input id="focus-addlayer" type="checkbox" checked>
+                  Añadir como capa
+                </label>
+                <label class="mini" style="display:flex; gap:6px; align-items:center;">
+                  Zoom
+                  <input id="focus-zoom" type="number" min="1" max="19" value="14" style="width:70px; padding:4px 8px; border:1px solid var(--border); border-radius:8px;">
+                </label>
+                <button id="focus-go" class="mini">🎯 Enfocar</button>
+              </div>
+              <small style="color:var(--muted); display:block; margin-top:6px;">
+                Tip: También puedes abrir el visor con <code>?geojson=./ruta/a/archivo.geojson</code>.
+              </small>
+            </div>
+
             <div id="geojson-list" class="gj-list"></div>
             <small style="color:var(--muted); display:block; margin-top:8px;">
               Consejo: puedes <b>editar geometrías</b> activando “✏️ Editar” en cada capa. Los cambios se exportan tal como los edites.
@@ -645,6 +683,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           </div>
         </div>
       </aside>
+
       <div class="trackball" id="tbbox" aria-label="Control de rotación 3D">
         <canvas id="tb" width="160" height="160" title="Arrastra para rotar 360°"></canvas>
         <div class="tb-row">
@@ -654,6 +693,8 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       </div>
     </div>
   </main>
+
+  <!-- Modal Nosotros -->
   <div id="modal-nosotros" style="display:none; position:fixed; top:var(--headerH); left:0; width:100%; height:calc(100% - var(--headerH)); background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
     <div style="background:white; padding:24px; border-radius:12px; max-width:600px; width:90%; box-shadow:0 8px 24px rgba(0,0,0,0.3); position:relative;">
       <h2 style="margin-top:0; color:#0a7bc2;">Nosotros</h2>
@@ -672,13 +713,14 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       </button>
     </div>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const $ = (s, ctx = document) => ctx.querySelector(s);
       const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
       const loading = $('#loading'), hud = $('#hud'), coordEl = $('#coord');
 
-      // === FUNCIONES DE ESTADÍSTICAS (popup en lugar de panel) ===
+      // === FUNCIONES DE ESTADÍSTICAS (popup) ===
       function calcularYMostrarEstadisticas(features, nombreCapa) {
         if (!features || !Array.isArray(features) || features.length === 0) {
           alert('⚠️ Capa sin geometrías válidas.');
@@ -688,27 +730,15 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         let conteo = features.length;
         features.forEach(f => {
           if (f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon')) {
-            try {
-              areaTotal += turf.area(f);
-            } catch (e) {
-              console.warn('Geometría inválida:', f);
-            }
+            try { areaTotal += turf.area(f); } catch (e) { console.warn('Geometría inválida:', f); }
           }
         });
         const area_km2 = (areaTotal / 1e6).toFixed(2);
         const area_ha = (areaTotal / 1e4).toFixed(1);
-
         let html = `<h4 style="margin:0 0 12px 0; color:#0a7bc2;">${nombreCapa}</h4><ul style="padding-left:20px; margin:0;">`;
-        if (area_km2 > 0) {
-          html += `<li>Área total: <strong>${area_km2} km²</strong> (${area_ha} ha)</li>`;
-        }
+        if (area_km2 > 0) html += `<li>Área total: <strong>${area_km2} km²</strong> (${area_ha} ha)</li>`;
         html += `<li>Elementos: <strong>${conteo}</strong></li></ul>`;
-
-        // Mostrar en popup elegante
-        const popup = L.popup({ maxWidth: 300, className: 'stats-popup' })
-          .setLatLng(map.getCenter())
-          .setContent(html)
-          .openOn(map);
+        L.popup({ maxWidth: 300, className: 'stats-popup' }).setLatLng(map.getCenter()).setContent(html).openOn(map);
       }
 
       // === FUNCIONES DE EXPORTACIÓN ===
@@ -719,7 +749,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         a.href = url; a.download = filename; a.click();
         URL.revokeObjectURL(url);
       }
-
       function exportarCSV(features, nombre) {
         if (!features.length) return alert('No hay datos para exportar.');
         const props = features[0].properties || {};
@@ -736,11 +765,8 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         a.click();
         URL.revokeObjectURL(a.href);
       }
-
       function geojsonToKML(gj) {
-        const kml = ['<?xml version="1.0" encoding="UTF-8"?>',
-          '<kml xmlns="http://www.opengis.net/kml/2.2">',
-          '<Document>'];
+        const kml = ['<?xml version="1.0" encoding="UTF-8"?>','<kml xmlns="http://www.opengis.net/kml/2.2">','<Document>'];
         gj.features.forEach(f => {
           const name = f.properties?.name || '';
           const geomJson = JSON.stringify(f.geometry).replace(/"type":"([^"]+)"/g, '"$1"');
@@ -749,7 +775,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         kml.push('</Document></kml>');
         return kml.join('\n');
       }
-
       function exportarKML(features, nombre) {
         const kmlStr = geojsonToKML({ type: 'FeatureCollection', features });
         const blob = new Blob([kmlStr], { type: 'application/vnd.google-earth.kml+xml' });
@@ -759,7 +784,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         a.click();
         URL.revokeObjectURL(a.href);
       }
-
       function aplicarFiltro(features, nombre, capaId) {
         const props = features[0]?.properties || {};
         const keys = Object.keys(props);
@@ -771,14 +795,11 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         const filtrados = features.filter(f => 
           f.properties?.[campo]?.toString().toLowerCase() === valor.toString().toLowerCase()
         );
-        if (filtrados.length === 0) {
-          alert('Ningún elemento coincide con el filtro.');
-          return;
-        }
+        if (filtrados.length === 0) return alert('Ningún elemento coincide con el filtro.');
         addGeoJSONToMap(`${nombre} - Filtro: ${campo}=${valor}`, { type: 'FeatureCollection', features: filtrados });
       }
 
-      // === MENÚ CONTEXTUAL MEJORADO ===
+      // === MENÚ CONTEXTUAL ===
       function crearMenuContextual(menuBtn, capaId, features, nombre) {
         let menuEl = null;
         menuBtn.addEventListener('click', (e) => {
@@ -801,7 +822,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           `;
           document.body.appendChild(menuEl);
           const rect = menuBtn.getBoundingClientRect();
-          
           const vw = window.innerWidth, vh = window.innerHeight;
           const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--headerH')) || 64;
           let left = rect.right + 4;
@@ -856,8 +876,28 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       }
 
       // === CAPAS REALES DE GÜICÁN ===
-      const capasRealesguican = [
-        { nombre: "CG_01_Modelo_de_ocupacion_del_territorio", ruta: "./datos/CG_01_Modelo_de_ocupacion_del_territorio.geojson" },
+      const capasRealesGuican = [
+        { nombre: "CG.01. Modelo de ocupación del territorio", ruta: "./datos/CG_01_Modelo_de_ocupacion_del_territorio.geojson" },
+        { nombre: "CG.02. Clasificación del suelo", ruta: "./datos/guican/CG.02. Clasificación del suelo.geojson" },
+        { nombre: "CG.03. Suelo de protección", ruta: "./datos/guican/CG.03. Suelo de protección.geojson" },
+        { nombre: "CG.04. Áreas de conservación y protección ambiental", ruta: "./datos/guican/CG.04. Áreas de conservación y protección ambiental.geojson" },
+        { nombre: "CG.05. Patrimonio Material", ruta: "./datos/guican/CG.05. Patrimonio Material.geojson" },
+        { nombre: "CG.06. Incorporación de la gestión del riesgo (Art. 23)", ruta: "./datos/guican/CG.06. Incorporación de la gestión del riesgo (Art. 23).geojson" },
+        { nombre: "CU.01. Suelo urbano y de expansión urbana", ruta: "./datos/guican/CU.01. Suelo urbano y de expansión urbana.geojson" },
+        { nombre: "CU.02. Áreas de conservación y protección ambiental", ruta: "./datos/guican/CU.02. Áreas de conservación y protección ambiental.geojson" },
+        { nombre: "CU.03. Patrimonio material", ruta: "./datos/guican/CU.03. Patrimonio material.geojson" },
+        { nombre: "CU.04. Espacio público", ruta: "./datos/guican/CU.04. Espacio público.geojson" },
+        { nombre: "CU.05. Servicios públicos domiciliarios", ruta: "./datos/guican/CU.05. Servicios públicos domiciliarios.geojson" },
+        { nombre: "CU.06. Equipamientos", ruta: "./datos/guican/CU.06. Equipamientos.geojson" },
+        { nombre: "CU.07. Infraestructura vial y de transporte", ruta: "./datos/guican/CU.07. Infraestructura vial y de transporte.geojson" },
+        { nombre: "CU.08. Tratamientos urbanísticos", ruta: "./datos/guican/CU.08. Tratamientos urbanísticos.geojson" },
+        { nombre: "CU.09. Áreas de actividad", ruta: "./datos/guican/CU.09. Áreas de actividad.geojson" },
+        { nombre: "CU.10. Incorporación de la gestión del riesgo (Art. 24)", ruta: "./datos/guican/CU.10. Incorporación de la gestión del riesgo (Art. 24).geojson" },
+        { nombre: "CR.01. Reglamentación del suelo rural", ruta: "./datos/guican/CR.01. Reglamentación del suelo rural.geojson" },
+        { nombre: "CR.02. Áreas de conservación y protección ambiental", ruta: "./datos/guican/CR.02. Áreas de conservación y protección ambiental.geojson" },
+        { nombre: "CR.03. Categorías del suelo rural", ruta: "./datos/guican/CR.03. Categorías del suelo rural.geojson" },
+        { nombre: "CR.04. Centros poblados", ruta: "./datos/guican/CR.04. Centros poblados.geojson" },
+        { nombre: "CR.05. Incorporación de la gestión del riesgo (Art. 25)", ruta: "./datos/guican/CR.05. Incorporación de la gestión del riesgo (Art. 25).geojson" }
       ];
       const municipiosNombres = {
         'Güicán': 'guican',
@@ -1013,8 +1053,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         }
       }
 
-      // === RESTO DEL CÓDIGO (MAPA, 3D, DROPDOWNS, ETC.) ===
-      
+      // === RESTO: dropdowns, modal, mapa base, overlays, HUD, medir, etc. ===
       const dropdowns = $$('.dropdown');
       dropdowns.forEach(d => {
         const btn = d.querySelector('.dropdown-btn');
@@ -1032,23 +1071,18 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       const modalNosotros = $('#modal-nosotros');
       const btnCerrarModal = $('#cerrar-modal');
       if (btnNosotros && modalNosotros && btnCerrarModal) {
-        btnNosotros.addEventListener('click', (e) => {
-          e.stopPropagation();
-          modalNosotros.style.display = 'flex';
-        });
-        btnCerrarModal.addEventListener('click', () => {
-          modalNosotros.style.display = 'none';
-        });
-        modalNosotros.addEventListener('click', (e) => {
-          if (e.target === modalNosotros) modalNosotros.style.display = 'none';
-        });
+        btnNosotros.addEventListener('click', (e) => { e.stopPropagation(); modalNosotros.style.display = 'flex'; });
+        btnCerrarModal.addEventListener('click', () => { modalNosotros.style.display = 'none'; });
+        modalNosotros.addEventListener('click', (e) => { if (e.target === modalNosotros) modalNosotros.style.display = 'none'; });
       }
+
       const map = L.map('map', { preferCanvas: true, zoomControl: false, attributionControl: false, zoomAnimation:false, fadeAnimation:false, markerZoomAnimation:false, updateWhenDragging:false, updateWhenZooming:false });
       const start = [6.467, -72.416];
       map.setView(start, 12);
       L.control.zoom({ position: 'bottomright' }).addTo(map);
       const attrCtrl = L.control.attribution({ prefix: false }).addAttribution('© OpenStreetMap contributors');
       attrCtrl.addTo(map);
+
       const basemaps = {
         osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, subdomains: 'abc' }),
         hot: L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { maxZoom: 19, subdomains: 'abc' }),
@@ -1065,6 +1099,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       };
       let currentBase = 'osm';
       basemaps[currentBase].addTo(map);
+
       const overlays = {
         worldcover: L.tileLayer.wms('https://tiles.maps.eox.at/wms', {
           layers: 'worldcover',
@@ -1081,29 +1116,31 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           version: '1.3.0'
         })
       };
-      // Activa manualmente desde el panel
-      // Activa manualmente desde el panel
+      // Atributos overlays
       attrCtrl.addAttribution('ESA WorldCover 2021 · NASA FIRMS (VIIRS)');
+
       const chkWC = $('#ovl-worldcover');
       const chkF = $('#ovl-firms');
       function syncOverlay(chk, layer) {
-        if (chk.checked) {
-          if (!map.hasLayer(layer)) layer.addTo(map);
-        } else {
-          if (map.hasLayer(layer)) map.removeLayer(layer);
-        }
+        if (chk.checked) { if (!map.hasLayer(layer)) layer.addTo(map); }
+        else { if (map.hasLayer(layer)) map.removeLayer(layer); }
       }
       chkWC.addEventListener('change', () => syncOverlay(chkWC, overlays.worldcover));
       chkF.addEventListener('change', () => syncOverlay(chkF, overlays.firms));
+
       function syncHUD2D() {
         const c = map.getCenter();
         hud.textContent = `🗺️ 2D — lat: ${c.lat.toFixed(5)}, lng: ${c.lng.toFixed(5)}, z: ${map.getZoom().toFixed(2)}`;
       }
       map.on('move zoom click', syncHUD2D);
       syncHUD2D();
+
       map.on('mousemove', (e) => coordEl.innerHTML = `Lat: ${e.latlng.lat.toFixed(6)}, Lon: ${e.latlng.lng.toFixed(6)}<br><small style="color:var(--muted);">🖱️ Mouse</small>`);
+
       map.pm.addControls({ position: 'topleft', drawMarker: true, drawPolyline: true, drawPolygon: true, editMode: true, dragMode: true, cutPolygon: true, removalMode: true });
       $('#btn-draw').addEventListener('click', () => map.pm.toggleControls());
+
+      // Medición
       let measuring = false, measureLine = null, pts = [], measureTooltip = null;
       function fmt(m) { return m < 1000 ? `${m.toFixed(1)} m` : `${(m / 1000).toFixed(2)} km`; }
       function stopMeasure() {
@@ -1142,6 +1179,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         map.on('dblclick', onEnd);
         $('#btn-measure').textContent = '⏹️ Finalizar';
       });
+
       $$('input[name="basemap"]').forEach(r => r.addEventListener('change', () => {
         Object.values(basemaps).forEach(l => { if (map.hasLayer(l)) map.removeLayer(l); });
         basemaps[r.value].addTo(map);
@@ -1149,36 +1187,18 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         if (glmap) change3DBasemap(currentBase);
         updateHash();
       }));
+
       function showLocation(lat, lng, accuracy) {
         const coordText = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         const precisionText = `±${Math.round(accuracy)} m`;
         let icon, label;
-        if (accuracy <= 20) {
-          icon = '🛰️'; label = 'GPS';
-        } else {
-          icon = '📶'; label = 'Red';
-        }
+        if (accuracy <= 20) { icon = '🛰️'; label = 'GPS'; } else { icon = '📶'; label = 'Red'; }
         hud.textContent = `${icon} ${label} — ${coordText} (${precisionText})`;
-        coordEl.innerHTML = `
-          Lat: ${lat.toFixed(6)}, Lon: ${lng.toFixed(6)}<br>
-          <small style="color:var(--muted);">${icon} ${label} • ${precisionText}</small>
-        `;
+        coordEl.innerHTML = `Lat: ${lat.toFixed(6)}, Lon: ${lng.toFixed(6)}<br><small style="color:var(--muted);">${icon} ${label} • ${precisionText}</small>`;
         if (window.userLocationMarker) map.removeLayer(window.userLocationMarker);
         const markerIcon = L.divIcon({
           className: 'user-location-icon',
-          html: `<div style="
-            background: ${accuracy <= 20 ? '#3498db' : '#e67e22'};
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            border: 2px solid white;
-          ">${icon}</div>`,
+          html: `<div style="background: ${accuracy <= 20 ? '#3498db' : '#e67e22'}; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 2px solid white;">${icon}</div>`,
           iconSize: [24, 24],
           iconAnchor: [12, 12]
         });
@@ -1189,38 +1209,24 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         map.setView([lat, lng], Math.max(map.getZoom(), 15));
       }
       function locateMe() {
-        if (!navigator.geolocation) {
-          alert('⚠️ Tu navegador no soporta geolocalización.');
-          return;
-        }
+        if (!navigator.geolocation) return alert('⚠️ Tu navegador no soporta geolocalización.');
         const btn = $('#btn-locate');
-        btn.textContent = '📍 Buscando…';
-        btn.disabled = true;
+        btn.textContent = '📍 Buscando…'; btn.disabled = true;
         navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const { latitude, longitude, accuracy } = pos.coords;
-            showLocation(latitude, longitude, accuracy);
-            btn.textContent = '📍 Mi ubicación';
-            btn.disabled = false;
-          },
-          (err) => {
-            console.error('Error de geolocalización:', err);
+          (pos) => { const { latitude, longitude, accuracy } = pos.coords; showLocation(latitude, longitude, accuracy); btn.textContent = '📍 Mi ubicación'; btn.disabled = false; },
+          (err) => { console.error('Error de geolocalización:', err);
             let msg = '⚠️ No se pudo obtener tu ubicación.';
             if (err.code === 1) msg = '⚠️ Permiso de ubicación denegado.';
             if (err.code === 2) msg = '⚠️ Ubicación no disponible (¿GPS activado?).';
             if (err.code === 3) msg = '⚠️ Tiempo de espera agotado.';
             alert(msg);
-            btn.textContent = '📍 Mi ubicación';
-            btn.disabled = false;
+            btn.textContent = '📍 Mi ubicación'; btn.disabled = false;
           },
-          {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 60000
-          }
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
         );
       }
       $('#btn-locate').addEventListener('click', locateMe);
+
       $('#copy-coords').addEventListener('click', () => {
         const c = map.getCenter();
         const text = `${c.lat.toFixed(6)},${c.lng.toFixed(6)}`;
@@ -1230,6 +1236,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           setTimeout(() => btn.textContent = '📋 Copiar coordenadas', 1500);
         });
       });
+
       let lastQueryAt = 0;
       $('#search-input').addEventListener('keydown', async (ev) => {
         if (ev.key !== 'Enter') return;
@@ -1256,6 +1263,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           $('#search-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
         }
       });
+
       function updateHash() {
         const c = map.getCenter(), z = map.getZoom();
         const wc = map.hasLayer(overlays.worldcover) ? 1 : 0;
@@ -1277,6 +1285,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       }
       $('#share-link').addEventListener('click', () => copyLink($('#share-link')));
       $('#share-link-panel').addEventListener('click', () => copyLink($('#share-link-panel')));
+
       (function restoreFromHash() {
         const h = location.hash.slice(1).split('/');
         if (h.length >= 5) {
@@ -1291,23 +1300,12 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
             const r = $(`input[name="basemap"][value="${bm}"]`);
             if (r) r.checked = true;
           }
-          if (wcFlag) {
-            // Activa manualmente desde el panel
-            $('#ovl-worldcover').checked = true;
-          } else {
-            if (map.hasLayer(overlays.worldcover)) map.removeLayer(overlays.worldcover);
-            $('#ovl-worldcover').checked = false;
-          }
-          if (fFlag) {
-            // Activa manualmente desde el panel
-            $('#ovl-firms').checked = true;
-          } else {
-            if (map.hasLayer(overlays.firms)) map.removeLayer(overlays.firms);
-            $('#ovl-firms').checked = false;
-          }
+          if (wcFlag) { $('#ovl-worldcover').checked = true; } else { if (map.hasLayer(overlays.worldcover)) map.removeLayer(overlays.worldcover); $('#ovl-worldcover').checked = false; }
+          if (fFlag) { $('#ovl-firms').checked = true; } else { if (map.hasLayer(overlays.firms)) map.removeLayer(overlays.firms); $('#ovl-firms').checked = false; }
         }
       })();
       
+      // === Licencias (UI lateral) ===
       const LICENSES_LITE = [
         { id:"urbanizacion", nombre:"Licencia de Urbanización",
           descripcion:"Autoriza ejecutar obras de urbanización (vías, espacio público y redes).",
@@ -1338,7 +1336,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           requisitos:["FUN diligenciado","Identificación/representación","Descripción técnica y planos","Concepto/permiso entidad administradora","PMT (si aplica)","Seguro/garantías y plan de manejo","Pago de derechos"]
         }
       ];
-
       function pl_renderList(items) {
         const list = document.getElementById('pl-list');
         list.innerHTML = '';
@@ -1356,7 +1353,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         });
         if (!items.length) list.innerHTML = '<div class="coord" style="text-align:center;">No hay resultados con ese filtro.</div>';
       }
-
       function pl_open() {
         const panel = document.getElementById('panel-licencias');
         panel.style.transform = 'translateX(0)';
@@ -1497,25 +1493,20 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       $('#btn3d').addEventListener('click', show3D);
       $('#btn-reset').addEventListener('click', () => {
         map.flyTo(start, 12, { duration: 1.0 });
-        if (glmap) {
-          glmap.easeTo({ center: [start[1], start[0]], zoom: 12, pitch: 55, bearing: 0, duration: 800 });
-        }
+        if (glmap) glmap.easeTo({ center: [start[1], start[0]], zoom: 12, pitch: 55, bearing: 0, duration: 800 });
       });
-      // Trackball, drawer, tabs, dropdowns...
-      const tb = $('#tb');
-      const tbc = tb.getContext('2d');
+
+      // Trackball
+      const tb = $('#tb'); const tbc = tb.getContext('2d');
       let tbActive = false, lastX = 0, lastY = 0;
       function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
       function wrap360(v) { return (v % 360 + 360) % 360; }
       function drawTB() {
         const w = tb.width, h = tb.height, r = w / 2;
-        tbc.clearRect(0, 0, w, h);
-        tbc.save();
-        tbc.translate(r, r);
+        tbc.clearRect(0, 0, w, h); tbc.save(); tbc.translate(r, r);
         const bearing = glmap ? glmap.getBearing() : 0;
         const pitch = glmap ? glmap.getPitch() : 55;
-        tbc.strokeStyle = 'rgba(21,62,117,.45)';
-        tbc.lineWidth = 1.5;
+        tbc.strokeStyle = 'rgba(21,62,117,.45)'; tbc.lineWidth = 1.5;
         tbc.beginPath(); tbc.arc(0, 0, r - 3, 0, Math.PI * 2); tbc.stroke();
         tbc.beginPath(); tbc.ellipse(0, 0, r - 10, (r - 10) * Math.cos(pitch * Math.PI / 180), 0, 0, Math.PI * 2); tbc.stroke();
         tbc.rotate(-bearing * Math.PI / 180);
@@ -1531,10 +1522,8 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
       }
       tb.addEventListener('pointerdown', e => {
         if (!is3D || !glmap) return;
-        tbActive = true;
-        const r = tb.getBoundingClientRect();
-        lastX = e.clientX - r.left;
-        lastY = e.clientY - r.top;
+        tbActive = true; const r = tb.getBoundingClientRect();
+        lastX = e.clientX - r.left; lastY = e.clientY - r.top;
         tb.setPointerCapture(e.pointerId || 1);
       });
       tb.addEventListener('pointermove', e => {
@@ -1554,6 +1543,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         drawTB();
       });
       document.addEventListener('glmap-ready', () => glmap.on('move', drawTB));
+
       $('#open-drawer').addEventListener('click', () => $('#drawer').classList.add('open'));
       $('#close-drawer').addEventListener('click', () => $('#drawer').classList.remove('open'));
       $$('.tab').forEach(tab => tab.addEventListener('click', () => {
@@ -1563,33 +1553,20 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         tab.classList.add('active');
         $(`#panel-${target}`).classList.add('active');
       }));
-      function closeAllDropdowns() {
-        document.querySelectorAll('.dropdown').forEach(dropdown => {
-          dropdown.classList.remove('active');
-        });
-      }
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown')) {
-          closeAllDropdowns();
-        }
-      });
+
+      function closeAllDropdowns() { document.querySelectorAll('.dropdown').forEach(dropdown => dropdown.classList.remove('active')); }
+      document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown')) { closeAllDropdowns(); } });
       document.getElementById('urbanismo-dropdown').addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.getElementById('planes-dropdown').classList.remove('active');
-        document.getElementById('urbanismo-dropdown').classList.toggle('active');
+        e.stopPropagation(); document.getElementById('planes-dropdown').classList.remove('active'); document.getElementById('urbanismo-dropdown').classList.toggle('active');
       });
       document.getElementById('planes-dropdown').addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.getElementById('urbanismo-dropdown').classList.remove('active');
-        document.getElementById('planes-dropdown').classList.toggle('active');
+        e.stopPropagation(); document.getElementById('urbanismo-dropdown').classList.remove('active'); document.getElementById('planes-dropdown').classList.toggle('active');
       });
       $$('[id="planes-dropdown"] .dropdown-content a').forEach(a => {
         a.addEventListener('click', (e) => {
           e.preventDefault();
           const texto = a.textContent.trim();
-          if (municipiosNombres[texto]) {
-            cargarCapasMunicipio(texto);
-          }
+          if (municipiosNombres[texto]) cargarCapasMunicipio(texto);
         });
       });
 
@@ -1607,39 +1584,23 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         return palette[(geoLayers.size) % palette.length];
       }
       function buildStyle(color, opacity) {
-        return {
-          color,
-          weight: 2,
-          opacity,
-          fillColor: color,
-          fillOpacity: Math.min(opacity, 0.5)
-        };
+        return { color, weight: 2, opacity, fillColor: color, fillOpacity: Math.min(opacity, 0.5) };
       }
       function applyOpacityToGroup(group, opacity) {
         group.setStyle?.(l => buildStyle(l.options.color || '#2563eb', opacity));
-        group.eachLayer(l => {
-          if (l.setStyle) l.setStyle(buildStyle((l.options.color||'#2563eb'), opacity));
-          if (l.setOpacity) l.setOpacity(opacity);
-        });
+        group.eachLayer(l => { if (l.setStyle) l.setStyle(buildStyle((l.options.color||'#2563eb'), opacity)); if (l.setOpacity) l.setOpacity(opacity); });
       }
       function toSingleFeatureCollection(group) {
         const gj = group.toGeoJSON();
         return gj.type === 'FeatureCollection' ? gj : { type: 'FeatureCollection', features: [gj] };
       }
       function pointToLayerFactory(color) {
-        return (feature, latlng) => L.circleMarker(latlng, {
-          radius: 6,
-          color,
-          weight: 2,
-          fillColor: color,
-          fillOpacity: 0.5
-        });
+        return (feature, latlng) => L.circleMarker(latlng, { radius: 6, color, weight: 2, fillColor: color, fillOpacity: 0.5 });
       }
       function onEachFeatureFactory() {
         return (f, layer) => {
           if (f && f.properties) {
-            const rows = Object.entries(f.properties)
-              .map(([k,v]) => `<tr><td><b>${k}</b></td><td>${v}</td></tr>`).join('');
+            const rows = Object.entries(f.properties).map(([k,v]) => `<tr><td><b>${k}</b></td><td>${v}</td></tr>`).join('');
             const pid = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2);
             const html = `
               <div style="min-width:220px">
@@ -1730,8 +1691,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           meta.group.eachLayer(l => { if (!l.pm) return; if (editing) l.pm.enable(); else l.pm.disable(); });
         });
         li.querySelector(`[data-zoom="${id}"]`).addEventListener('click', () => {
-          try { map.fitBounds(group.getBounds(), { maxZoom: 17, padding: [20,20] }); }
-          catch(e){ /* puede no tener bounds */ }
+          try { map.fitBounds(group.getBounds(), { maxZoom: 17, padding: [20,20] }); } catch(e){ /* puede no tener bounds */ }
         });
         li.querySelector(`[data-exp="${id}"]`).addEventListener('click', () => {
           const fc = toSingleFeatureCollection(group);
@@ -1744,7 +1704,14 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
           delete capasFeatures[id];
           li.remove();
         });
+
+        // ✅ Al agregar capa manualmente, ajusta vista automáticamente
+        try {
+          const bounds = group.getBounds();
+          if (bounds && bounds.isValid()) map.fitBounds(bounds, { maxZoom: 17, padding: [20,20] });
+        } catch {}
       }
+
       async function handleFiles(fileList) {
         const files = Array.from(fileList).filter(f => /(\.geojson|\.json)$/i.test(f.name));
         if (!files.length) { alert('No se detectaron archivos .geojson o .json'); return; }
@@ -1761,6 +1728,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         }
         loading.classList.remove('active');
       }
+
       fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
       ;[dropzone, document.getElementById('map')].forEach(el => {
         el.addEventListener('dragover', (ev) => { ev.preventDefault(); dropzone.classList.add('dragover'); });
@@ -1788,6 +1756,79 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
         gjList.innerHTML = '';
         Object.keys(capasFeatures).forEach(k => delete capasFeatures[k]);
       });
+
+      // =========================
+      // ✅ NUEVO: ENFOCAR GEOJSON
+      // =========================
+      async function centerOnGeoJSON(url, opts = { addLayer: true, zoom: 14 }) {
+        try {
+          loading.classList.add('active');
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error(`HTTP ${res.status} – ${url}`);
+          const gj = await res.json();
+
+          let group = null;
+          if (opts.addLayer) {
+            const color = '#0a7bc2';
+            group = L.geoJSON(gj, {
+              style: { color, weight: 2, fillColor: color, fillOpacity: .25 },
+              pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 6, color, weight: 2, fillColor: color, fillOpacity: .5 })
+            }).addTo(map);
+
+            // Agregar también a la lista de capas manejadas
+            try {
+              addGeoJSONToMap((url.split('/').pop() || 'capa').replace(/\.(geojson|json)$/i,''), gj, { color });
+            } catch {}
+          }
+
+          // Fit por bbox, si falla usa centroid
+          let fitted = false;
+          try {
+            const bbox = turf.bbox(gj);
+            if (bbox && bbox.length === 4 && bbox.every(Number.isFinite)) {
+              map.fitBounds([[bbox[1], bbox[0]], [bbox[3], bbox[2]]], { padding: [30,30], maxZoom: 17 });
+              fitted = true;
+            }
+          } catch {}
+
+          if (!fitted) {
+            const c = turf.centroid(gj).geometry.coordinates;
+            map.setView([c[1], c[0]], opts.zoom || 14);
+          }
+
+          return { ok: true, data: gj, layer: group };
+        } catch (err) {
+          console.error(err);
+          alert('⚠️ No se pudo centrar en el GeoJSON.\n' + (err?.message || err));
+          return { ok:false, error:err };
+        } finally {
+          loading.classList.remove('active');
+        }
+      }
+      // Exponer global
+      window.centerOnGeoJSON = centerOnGeoJSON;
+
+      // Controles de UI del panel GeoJSON
+      const focusUrlInput = $('#focus-url');
+      const focusAdd = $('#focus-addlayer');
+      const focusZoom = $('#focus-zoom');
+      const focusBtn = $('#focus-go');
+
+      focusBtn.addEventListener('click', async () => {
+        const url = (focusUrlInput.value || '').trim();
+        if (!url) { alert('Escribe una URL o ruta relativa al archivo GeoJSON.'); return; }
+        const zoom = Math.max(1, Math.min(19, parseInt(focusZoom.value || '14', 10)));
+        await centerOnGeoJSON(url, { addLayer: !!focusAdd.checked, zoom });
+      });
+      focusUrlInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') focusBtn.click(); });
+
+      // ?geojson= soportado desde la URL
+      (function focusFromQueryParam() {
+        const qs = new URLSearchParams(location.search);
+        const focusUrl = qs.get('geojson') || qs.get('focus');
+        if (focusUrl) centerOnGeoJSON(focusUrl, { addLayer: true, zoom: 14 });
+      })();
+
       loading.classList.remove('active');
     });
   </script>
