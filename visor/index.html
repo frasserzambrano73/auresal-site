@@ -26,6 +26,9 @@
   <script defer src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
   <style>
     :root {
+      --agua:#2f6f73;
+      --tierra:#8c5a3c;
+      --gradiente:linear-gradient(135deg, var(--agua), var(--tierra));
       --primary: #0a74d1;
       --secondary: #2fb36f;
       --accent: #f4b400;
@@ -527,9 +530,6 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 </head>
 <body>
   <div class="promo-banner">
-    🏗️ Geoportal de la Fundación Urbanismo y Territorio
-    <a href="tienda.html">Ver servicios</a> •
-    <a href="donar.html">Apoya nuestro trabajo</a>
   </div>
   <header>
     <div class="wrap">
@@ -860,26 +860,7 @@ nav.top-menu a, .dropdown-btn { border-radius: 10px; }
 
       // === CAPAS REALES DE GÜICÁN ===
       const capasRealesGuican = [
-        { nombre: "CG_01_Modelo_de_ocupacion_del_territorio", ruta: "./datos/guican/componente_general/CG_01_Modelo_de_ocupacion_del_territorio.geojson" },
-        { nombre: "CG.02. Clasificación del suelo", ruta: "./datos/guican/componente_general/CG.02. Clasificación del suelo.geojson" },
-        { nombre: "CG.03. Suelo de protección", ruta: "./datos/guican/componente_general/CG.03. Suelo de protección.geojson" },
-        { nombre: "CG.04. Áreas de conservación y protección ambiental", ruta: "./datos/guican/componente_general/CG.04. Áreas de conservación y protección ambiental.geojson" },
-        { nombre: "CG.05. Patrimonio Material", ruta: "./datos/guican/componente_general/CG.05. Patrimonio Material.geojson" },
-        { nombre: "CG.06. Incorporación de la gestión del riesgo (Art. 23)", ruta: "./datos/guican/componente_general/CG.06. Incorporación de la gestión del riesgo (Art. 23).geojson" },
-        { nombre: "CU.01. Suelo urbano y de expansión urbana", ruta: "./datos/guican/componente_urbano/CU.01. Suelo urbano y de expansión urbana.geojson" },
-        { nombre: "CU.02. Áreas de conservación y protección ambiental", ruta: "./datos/guican/componente_urbano/CU.02. Áreas de conservación y protección ambiental.geojson" },
-        { nombre: "CU.03. Patrimonio material", ruta: "./datos/guican/componente_urbano/CU.03. Patrimonio material.geojson" },
-        { nombre: "CU.04. Espacio público", ruta: "./datos/guican/componente_urbano/CU.04. Espacio público.geojson" },
-        { nombre: "CU.05. Servicios públicos domiciliarios", ruta: "./datos/guican/componente_urbano/CU.05. Servicios públicos domiciliarios.geojson" },
-        { nombre: "CU.06. Equipamientos", ruta: "./datos/guican/componente_urbano/CU.06. Equipamientos.geojson" },
-        { nombre: "CU.07. Infraestructura vial y de transporte", ruta: "./datos/guican/componente_urbano/CU.07. Infraestructura vial y de transporte.geojson" },
-        { nombre: "CU.08. Tratamientos urbanísticos", ruta: "./datos/guican/componente_urbano/CU.08. Tratamientos urbanísticos.geojson" },
-        { nombre: "CU.09. Áreas de actividad", ruta: "./datos/guican/componente_urbano/CU.09. Áreas de actividad.geojson" },
-        { nombre: "CU.10. Incorporación de la gestión del riesgo (Art. 24)", ruta: "./datos/guican/componente_urbano/CU.10. Incorporación de la gestión del riesgo (Art. 24).geojson" },
-        { nombre: "CR.01. Reglamentación del suelo rural", ruta: "./datos/guican/componente_rural/CR.01. Reglamentación del suelo rural.geojson" },
-        { nombre: "CR.02. Áreas de conservación y protección ambiental", ruta: "./datos/guican/componente_rural/CR.02. Áreas de conservación y protección ambiental.geojson" },
-        { nombre: "CR.03. Categorías del suelo rural", ruta: "./datos/guican/componente_rural/CR.03. Categorías del suelo rural.geojson" },
-        { nombre: "CR.04. Centros poblados", ruta: "./datos/guican/componente_rural/CR.04. Centros poblados.geojson" },
+        { nombre: "CG_01_Modelo_de_ocupacion_del_territorio", ruta: "./datos/guican/componente_general/CG_01_Modelo_de_ocupacion_del_territorio.geojson" },,
         { nombre: "CR.05. Incorporación de la gestión del riesgo (Art. 25)", ruta: "./datos/guican/componente_rural/CR.05. Incorporación de la gestión del riesgo (Art. 25).geojson" }
       ];
       const municipiosNombres = {
