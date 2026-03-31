@@ -1,0 +1,52 @@
+{
+  "type": "FeatureCollection",
+  "name": "CG.01. Modelo de ocupación del territorio",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1,
+        "categoria": "Urbano",
+        "descripcion": "Zona de ocupación urbana consolidada"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-73.3700, 5.5500],
+            [-73.3600, 5.5500],
+            [-73.3600, 5.5400],
+            [-73.3700, 5.5400],
+            [-73.3700, 5.5500]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2,
+        "categoria": "Rural",
+        "descripcion": "Zona de uso agrícola y rural"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-73.3800, 5.5600],
+            [-73.3700, 5.5600],
+            [-73.3700, 5.5500],
+            [-73.3800, 5.5500],
+            [-73.3800, 5.5600]
+          ]
+        ]
+      }
+    }
+  ]
+}
