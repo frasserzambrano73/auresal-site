@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda AURA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --agua:#2f6f73;
+    --tierra:#8c5a3c;
+    --arena:#c9a27e;
+    --oscuro:#1f2d3a;
+    --claro:#f4f6f8;
+    --blanco:#ffffff;
+    --gradiente:linear-gradient(135deg, var(--agua), var(--tierra));
+}
+
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--claro);color:var(--oscuro);} 
+
+a{text-decoration:none;}
+
+/* HEADER */
+.header{
+    background:var(--gradiente);
+    color:white;
+    text-align:center;
+    padding:50px 20px;
+}
+.header h1{font-size:2.5rem;margin-bottom:10px;}
+.header p{opacity:0.9;max-width:600px;margin:auto;}
+.back-btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 25px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.2);
+    color:white;
+}
+
+/* GRID PRINCIPAL */
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+}
+
+.category{
+    background:white;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.category h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:var(--agua);
+}
+
+/* PRODUCTOS */
+.product{
+    border-bottom:1px solid #eee;
+    padding-bottom:15px;
+    margin-bottom:15px;
+}
+
+.product:last-child{border:none;}
+
+.product h3{
+    margin-bottom:5px;
+    color:var(--tierra);
+}
+
+.product p{
+    font-size:0.9rem;
+    color:#555;
+}
+
+.tag{
+    display:inline-block;
+    font-size:0.75rem;
+    background:var(--arena);
+    color:white;
+    padding:3px 10px;
+    border-radius:10px;
+    margin-bottom:6px;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:8px;
+    padding:8px 18px;
+    background:var(--gradiente);
+    color:white;
+    border-radius:20px;
+    font-size:0.85rem;
+}
+
+/* WHATSAPP FLOAT */
+.whatsapp{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#25D366;
+    color:white;
+    padding:15px;
+    border-radius:50%;
+    font-size:20px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* FOOTER */
+.footer{
+    background:var(--oscuro);
+    color:white;
+    text-align:center;
+    padding:30px;
+    margin-top:40px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Tienda AURA</h1>
+    <p>Productos técnicos, artísticos y de exploración diseñados para interpretar y transformar el territorio.</p>
+    <a href="index.html" class="back-btn">← Volver</a>
+</div>
+
+<div class="container">
+<div class="grid">
+
+<!-- MAPAS -->
+<div class="category">
+<h2>🗺️ Mapas y visualización</h2>
+
+<div class="product">
+<span class="tag">Top ventas</span>
+<h3>Mapas técnicos impresos</h3>
+<p>Cartografía temática en gran formato para POT, riesgo y planificación.</p>
+<a href="https://wa.me/573144429234?text=Quiero%20mapas%20técnicos" class="btn">Solicitar</a>
+</div>
+
+<div class="product">
+<h3>Mapas artísticos</h3>
+<p>Interpretaciones visuales del territorio para exhibición o proyectos.</p>
+<a href="#" class="btn">Ver colección</a>
+</div>
+
+<div class="product">
+<h3>Atlas municipal</h3>
+<p>Compilación completa de mapas para gestión territorial.</p>
+<a href="#" class="btn">Solicitar</a>
+</div>
+
+</div>
+
+<!-- ARTE -->
+<div class="category">
+<h2>🎨 Arte territorial</h2>
+
+<div class="product">
+<span class="tag">Edición limitada</span>
+<h3>Pinturas del agua</h3>
+<p>Obras inspiradas en cuencas, páramos y dinámicas naturales.</p>
+<a href="#" class="btn">Ver obras</a>
+</div>
+
+<div class="product">
+<h3>Relieves en yeso</h3>
+<p>Modelos físicos del territorio para educación y exhibición.</p>
+<a href="#" class="btn">Ver</a>
+</div>
+
+<div class="product">
+<h3>Cuadros cartográficos</h3>
+<p>Mapas convertidos en piezas decorativas.</p>
+<a href="#" class="btn">Ver</a>
+</div>
+
+</div>
+
+<!-- EQUIPAMIENTO -->
+<div class="category">
+<h2>🏔️ Equipamiento territorial</h2>
+
+<div class="product">
+<span class="tag">Outdoor</span>
+<h3>Ropa técnica de montaña</h3>
+<p>Diseñada para trabajo en campo en páramo y alta montaña.</p>
+<a href="#" class="btn">Ver</a>
+</div>
+
+<div class="product">
+<h3>Mochila AURA</h3>
+<p>Optimizada para trabajo técnico y exploración territorial.</p>
+<a href="#" class="btn">Ver</a>
+</div>
+
+<div class="product">
+<h3>Kit de campo AURA</h3>
+<p>Incluye libreta impermeable, brújula y herramientas básicas.</p>
+<a href="#" class="btn">Ver</a>
+</div>
+
+<div class="product">
+<h3>Camisetas AURA</h3>
+<p>Identidad territorial y conciencia ambiental.</p>
+<a href="#" class="btn">Comprar</a>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<a href="https://wa.me/573144429234" class="whatsapp">💬</a>
+
+<div class="footer">
+<p>© 2026 AURA - Fundación Agua y Urbanismo</p>
+</div>
+
+</body>
+</html>
