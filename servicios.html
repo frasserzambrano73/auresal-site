@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA | Consultoría Territorial y Gestión del Agua</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --agua:#2f6f73;
+    --tierra:#8c5a3c;
+    --arena:#c9a27e;
+    --oscuro:#1f2d3a;
+    --claro:#f4f6f8;
+    --blanco:#ffffff;
+    --gradiente:linear-gradient(135deg, var(--agua), var(--tierra));
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter', sans-serif;background:var(--claro);color:var(--oscuro);} 
+.header{background:var(--gradiente);color:white;padding:60px 20px;text-align:center;}
+.header h1{font-size:2.5rem;margin-bottom:10px;}
+.header p{opacity:0.9;}
+.back-btn{display:inline-block;margin-top:20px;padding:12px 28px;border-radius:30px;background:rgba(255,255,255,0.15);color:white;text-decoration:none;transition:0.3s;}
+.back-btn:hover{background:rgba(255,255,255,0.3);} 
+.container{max-width:1200px;margin:auto;padding:40px 20px;}
+.intro{background:white;padding:40px;border-radius:16px;text-align:center;margin-bottom:40px;box-shadow:0 10px 30px rgba(0,0,0,0.08);} 
+.service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
+.service-card{background:white;border-radius:18px;padding:30px;box-shadow:0 10px 25px rgba(0,0,0,0.08);transition:all 0.3s ease;position:relative;overflow:hidden;}
+.service-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:5px;background:var(--gradiente);} 
+.service-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.15);} 
+.icon{font-size:2.5rem;margin-bottom:15px;}
+.service-card h3{margin-bottom:10px;}
+.service-card ul{padding-left:18px;margin-bottom:15px;}
+.service-card li{margin-bottom:6px;color:#555;}
+.price{display:inline-block;background:var(--gradiente);color:white;padding:8px 16px;border-radius:20px;font-weight:600;margin-bottom:15px;}
+.btn-order{display:block;text-align:center;padding:14px;border-radius:10px;background:var(--gradiente);color:white;text-decoration:none;font-weight:600;transition:0.3s;}
+.btn-order:hover{transform:scale(1.03);} 
+.btn-secondary{display:block;text-align:center;padding:12px;border-radius:10px;border:2px solid var(--agua);color:var(--agua);text-decoration:none;font-weight:600;margin-bottom:10px;}
+.footer{background:var(--oscuro);color:white;text-align:center;padding:40px 20px;margin-top:60px;} 
+.footer p{margin:5px 0;opacity:0.8;} 
+@media(max-width:600px){.header h1{font-size:2rem;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Servicios AURA</h1>
+    <p>Consultoría estratégica en ordenamiento territorial y gestión del agua</p>
+    <a href="index.html" class="back-btn">← Volver</a>
+</div>
+
+<div class="container">
+
+    <div class="intro">
+        <h2>Soluciones integrales para el territorio</h2>
+        <p>Cofinanciamos proyectos públicos hasta en un 50% y acompañamos técnicamente su estructuración, formulación y ejecución.</p>
+    </div>
+
+    <div class="service-grid">
+
+        <div class="service-card">
+            <div class="icon">🛰️</div>
+            <h3><a href="servicios/ingenieria.html" style="text-decoration:none;color:inherit;">Estudios de Ingeniería</a></h3>
+            <ul>
+                <li>Fotogrametría de alta precisión</li>
+                <li>Topografía</li>
+                <li>Estudios de cobertura del suelo CLC</li>
+                <li>Hidrología</li>
+                <li>Modelación de amenazas por movimientos en masa</li>
+                <li>Modelación de amenazas por inundaciones</li>
+                <li>Modelación de amenazas por avenidas torrenciales</li>
+                <li>Cartografía y SIG</li>
+            </ul>
+            <span class="price">Cofinanciamos 50%</span>
+            <a href="servicios/ingenieria.html" class="btn-secondary">Ver detalle</a>
+            <a href="orden-servicio.html?servicio=ingenieria" class="btn-order">Solicitar servicio</a>
+        </div>
+
+        <div class="service-card">
+            <div class="icon">🏙️</div>
+            <h3><a href="servicios/urbanismo.html" style="text-decoration:none;color:inherit;">Urbanismo</a></h3>
+            <ul>
+                <li>Planes de Ordenamiento Territorial</li>
+                <li>Planes Parciales</li>
+                <li>Normativa urbana</li>
+                <li>Gestión del suelo</li>
+            </ul>
+            <span class="price">Cofinanciamos 50%</span>
+            <a href="servicios/urbanismo.html" class="btn-secondary">Ver detalle</a>
+            <a href="orden-servicio.html?servicio=urbanismo" class="btn-order">Solicitar servicio</a>
+        </div>
+
+        <div class="service-card">
+            <div class="icon">🎓</div>
+            <h3><a href="servicios/educacion.html" style="text-decoration:none;color:inherit;">Educación para el trabajo</a></h3>
+            <ul>
+                <li>Cursos especializados</li>
+                <li>Diplomados técnicos</li>
+                <li>Capacitación institucional</li>
+            </ul>
+            <span class="price">Próximamente</span>
+            <a href="servicios/educacion.html" class="btn-secondary">Ver detalle</a>
+            <a href="orden-servicio.html?servicio=educacion" class="btn-order">Solicitar cupo</a>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>Contacto: frasserzambrano@gmail.com</p>
+    <p>Tel: +57 314 442 9234</p>
+    <p>© 2026 AURA - Fundación Agua y Urbanismo</p>
+</div>
+
+</body>
+</html>
