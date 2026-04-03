@@ -3,10 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>AURA | Agua y Urbanismo</title>
-
+<title>AUREA | Agua y Urbanismo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- SEO -->
+<meta name="description" content="AUREA: Plataforma de gestión del agua y territorio. Diplomado Conflictos Ambientales, proyectos sostenibles y recursos hídricos.">
+<meta name="keywords" content="agua, territorio, diplomado, gestión hídrica, sostenibilidad, páramo, ordenamiento territorial">
+<meta name="author" content="AURA">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://auresal.org/">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0LZP700S7T"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0LZP700S7T');
+</script>
 
 <style>
 :root{
@@ -18,124 +32,56 @@
 --blanco:#ffffff;
 --gradiente:linear-gradient(135deg,var(--agua),var(--tierra));
 }
-
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',sans-serif;background:var(--claro);color:var(--oscuro);} 
-
 a{text-decoration:none;color:inherit;}
 
-/* NAV */
-.navbar{
-position:fixed;top:0;width:100%;
-background:rgba(31,45,58,0.95);
-display:flex;justify-content:space-between;
-align-items:center;
-padding:12px 30px;z-index:1000;
-}
-
+/* NAVBAR */
+.navbar{position:fixed;top:0;width:100%;background:rgba(31,45,58,0.95);display:flex;justify-content:space-between;align-items:center;padding:12px 30px;z-index:1000;}
 .logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;}
 .logo img{height:40px;}
-
 .menu a{color:#fff;margin-left:20px;font-size:0.9rem;opacity:0.9;}
 .menu a:hover{opacity:1;}
 
 /* HERO */
-.hero{
-margin-top:70px;
-min-height:92vh;
-background:
-linear-gradient(rgba(0,0,0,0.5), rgba(47,111,115,0.85)),
-url('img/hero/hero_paramo.jpg') center/cover no-repeat;
-display:flex;align-items:center;justify-content:center;
-text-align:center;color:#fff;padding:20px;
-}
-
-.hero h1{font-size:3.2rem;margin-bottom:15px;font-weight:700;}
+.hero{margin-top:70px;min-height:92vh;background:linear-gradient(rgba(0,0,0,0.5), rgba(47,111,115,0.85)),url('img/hero/hero_paramo.jpg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:20px;position:relative;}
+.hero h1{font-size:3rem;margin-bottom:15px;font-weight:700;}
 .hero p{font-size:1.2rem;margin-bottom:25px;max-width:750px;margin-inline:auto;opacity:0.95;}
 .hero .subline{margin-top:10px;font-size:0.95rem;opacity:0.85;}
+.btn-primary{background:var(--gradiente);color:#fff;padding:14px 28px;border-radius:30px;margin:10px;font-weight:600;}
+.btn-secondary{border:2px solid #fff;padding:14px 28px;border-radius:30px;color:#fff;margin:10px;}
 
-.btn-primary{
-background:var(--gradiente);
-color:#fff;
-padding:14px 28px;
-border-radius:30px;
-margin:10px;
-font-weight:600;
-}
-
-.btn-secondary{
-border:2px solid #fff;
-padding:14px 28px;
-border-radius:30px;
-color:#fff;
-margin:10px;
-}
-
-/* SECTION */
+/* SECTIONS */
 .section{padding:80px 20px;text-align:center;}
 .section h2{font-size:2rem;margin-bottom:10px;color:var(--agua);} 
 .section p{max-width:600px;margin:auto;color:#555;}
 
 /* GRID */
-.nav-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:25px;
-max-width:1100px;
-margin:40px auto;
-}
-
-.nav-card{
-background:#fff;
-padding:30px;
-border-radius:16px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-transition:0.3s;
-}
-
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px;max-width:1100px;margin:40px auto;}
+.nav-card{background:#fff;padding:30px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,0.08);transition:0.3s;}
 .nav-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.15);} 
-
 .icon{font-size:2.5rem;margin-bottom:10px;}
 
 /* IMPACT */
-.impact{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-max-width:900px;
-margin:40px auto;
-}
-
-.stat{
-background:#fff;
-padding:25px;
-border-radius:14px;
-box-shadow:0 8px 20px rgba(0,0,0,0.06);
-}
-
+.impact{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:40px auto;}
+.stat{background:#fff;padding:25px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,0.06);}
 .stat h2{color:var(--agua);font-size:2.2rem;margin-bottom:5px;}
 
 /* FOOTER */
-.footer{
-background:var(--oscuro);
-color:#fff;
-text-align:center;
-padding:30px;
-margin-top:40px;
-}
+.footer{background:var(--oscuro);color:#fff;text-align:center;padding:30px;margin-top:40px;position:relative;}
 .footer p{opacity:0.8;margin:5px 0;}
+.visitas{position:absolute;bottom:5px;left:5px;font-size:0.7rem;color:#ccc;opacity:0.6;}
 
+/* MARQUEE */
+.marquee-container{overflow:hidden;white-space:nowrap;background:var(--agua);color:#fff;padding:10px;border-radius:10px;margin:20px auto;max-width:95%;font-size:0.9rem;}
+.marquee-text{display:inline-block;animation:scroll 60s linear infinite;}
+@keyframes scroll{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
 </style>
 </head>
-
 <body>
 
 <nav class="navbar">
-<div class="logo">
-<img src="img/iconos/logo.png" alt="logo">
-<span>AURA</span>
-</div>
-
+<div class="logo"><img src="img/iconos/logo.png" alt="logo"><span>AURA</span></div>
 <div class="menu">
   <a href="visor/index.html">Geovisor</a>
   <a href="proyectos.html">Proyectos</a>
@@ -152,38 +98,30 @@ margin-top:40px;
 <h1>El agua define el territorio</h1>
 <p>Plataforma inteligente para la gestión del agua y el territorio en tiempo real.</p>
 <p class="subline">Si el agua fluye, hay esperanza.</p>
-
 <div>
   <a href="visor/index.html" class="btn-primary">Explorar Geovisor</a>
-  <a href="servicios.html" class="btn-secondary">Solicitar diagnóstico</a>
+  <a href="diplomado.html" class="btn-secondary">🎉 ¡Nuevo Diplomado!</a>
 </div>
 </div>
 </section>
 
+<!-- MARQUEE DE FRASES -->
 <section class="section">
-<h2>Plataforma AURA</h2>
+<div class="marquee-container">
+  <div class="marquee-text">
+  "El agua es vida." • "Cada río es un universo." • "Donde fluye el agua, florece la vida." • "El agua transforma todo." • "Nada somos sin agua." • "El agua es paciencia líquida." • "El agua enseña adaptación." • "El agua abraza sin sujetar." • "El agua es libertad líquida." • "El agua fluye sin resistencia." 
+  </div>
+</div>
+</section>
+
+<!-- PLATAFORMA -->
+<section class="section">
+<h2>Plataforma AUREA</h2>
 <p>Integramos datos, monitoreo y planificación territorial en un solo sistema.</p>
-
 <div class="nav-grid">
-
-<a href="visor/index.html" class="nav-card">
-  <div class="icon">🗺️</div>
-  <h3>Geovisor</h3>
-  <p>Consulta normativa, riesgo y territorio en segundos.</p>
-</a>
-
-<a href="proyectos.html" class="nav-card">
-<div class="icon">📁</div>
-<h3>Proyectos</h3>
-<p>Casos reales de transformación territorial.</p>
-</a>
-
-<a href="servicios.html" class="nav-card">
-<div class="icon">⚙️</div>
-<h3>Servicios</h3>
-<p>Planificación, POT y gestión del riesgo.</p>
-</a>
-
+<a href="visor/index.html" class="nav-card"><div class="icon">🗺️</div><h3>Geovisor</h3><p>Consulta normativa, riesgo y territorio en segundos.</p></a>
+<a href="proyectos.html" class="nav-card"><div class="icon">📁</div><h3>Proyectos</h3><p>Casos reales de transformación territorial.</p></a>
+<a href="diplomado.html" class="nav-card"><div class="icon">🎓</div><h3>Diplomado</h3><p>Conflictos ambientales y páramos.</p></a>
 </div>
 </section>
 
@@ -196,64 +134,22 @@ margin-top:40px;
 </div>
 </section>
 
-<section class="section">
-<h2>Explora</h2>
-<div class="nav-grid">
-<a href="recursos.html" class="nav-card"><div class="icon">🎧</div><h3>Recursos</h3></a>
-<a href="tienda.html" class="nav-card"><div class="icon">🛒</div><h3>Tienda</h3></a>
-<a href="fundacion.html" class="nav-card"><div class="icon">🏛️</div><h3>Fundación</h3></a>
-<a href="contacto.html" class="nav-card"><div class="icon">📬</div><h3>Contacto</h3></a>
-</div>
-</section>
-
-<section class="section">
-<h2>Cómo funciona AURA</h2>
-<p>Transformamos datos del territorio en decisiones concretas para la planificación y gestión del agua.</p>
-
-<div class="nav-grid">
-
-<div class="nav-card">
-<div class="icon">📡</div>
-<h3>1. Captura de datos</h3>
-<p>Monitoreo de caudales, información geográfica y variables ambientales en tiempo real.</p>
-</div>
-
-<div class="nav-card">
-<div class="icon">🧠</div>
-<h3>2. Análisis inteligente</h3>
-<p>Procesamos información mediante modelos territoriales, SIG y criterios normativos.</p>
-</div>
-
-<div class="nav-card">
-<div class="icon">🗺️</div>
-<h3>3. Visualización</h3>
-<p>Geovisores interactivos que permiten entender el territorio en capas claras y accionables.</p>
-</div>
-
-<div class="nav-card">
-<div class="icon">⚖️</div>
-<h3>4. Toma de decisiones</h3>
-<p>Soporte técnico para POT, gestión del riesgo y planificación estratégica.</p>
-</div>
-
-</div>
-</section>
-
-<section class="section">
-<h2>Solicite un diagnóstico territorial</h2>
-<p>Obtenga una lectura clara de su territorio: normativa, riesgos, agua y oportunidades en un solo análisis.</p>
-
-<div>
-<a href="contacto.html" class="btn-primary">Solicitar diagnóstico</a>
-<a href="visor/index.html" class="btn-secondary">Ver Geovisor</a>
-</div>
-</section>
-
 <footer class="footer">
 <p>Contacto: frasserzambrano@gmail.com</p>
 <p>Tel: +57 314 442 9234</p>
-<p>© 2026 AURA - Agua y Urbanismo</p>
+<p>© 2026 AUREA - Agua y Urbanismo</p>
+<div class="visitas">Visitas: <span id="contador">0</span></div>
 </footer>
+
+<script>
+// MARQUEE animado ya hecho en CSS
+
+// CONTADOR DE VISITAS DISCRETO (localStorage simple)
+let contador = localStorage.getItem('contador') || 0;
+contador++;
+localStorage.setItem('contador', contador);
+document.getElementById('contador').textContent = contador;
+</script>
 
 </body>
 </html>
