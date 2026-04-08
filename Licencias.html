@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Licenciamiento Urbanístico | AUR</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{font-family:'Inter',sans-serif;margin:0;background:#f5f7fa;}
+header{background:#1f2d3a;color:#fff;padding:15px 30px;display:flex;justify-content:space-between;}
+.container{max-width:600px;margin:60px auto;background:#fff;padding:30px;border-radius:10px;}
+input{width:100%;padding:12px;margin:10px 0;}
+button{width:100%;padding:14px;background:#2f6f73;color:#fff;border:none;border-radius:6px;}
+.result{margin-top:20px;padding:20px;border-radius:8px;display:none;}
+.verde{background:#e6f4ea;}
+.amarillo{background:#fff8e1;}
+.rojo{background:#fdecea;}
+</style>
+</head>
+
+<body>
+
+<header>
+<div>AUR</div>
+<div><a href="index.html" style="color:white;">← Inicio</a></div>
+</header>
+
+<div class="container">
+
+<h2>Evaluar predio</h2>
+
+<input type="text" id="predio" placeholder="ID del predio">
+
+<button onclick="evaluar()">Evaluar</button>
+
+<div id="resultado" class="result"></div>
+
+</div>
+
+<script>
+function evaluar(){
+
+  const predio = document.getElementById("predio").value;
+
+  // 🔴 SIMULACIÓN (conectar luego a backend)
+  const data = {
+    estado: "VIABLE_CONDICIONADO",
+    uso: "Residencial",
+    altura: 3,
+    indice: 0.6,
+    restricciones: ["Retiro 30m quebrada"]
+  };
+
+  mostrar(predio, data);
+}
+
+function mostrar(predio, d){
+
+  const div = document.getElementById("resultado");
+  div.style.display = "block";
+
+  let clase = "verde";
+  if(d.estado.includes("CONDICIONADO")) clase="amarillo";
+  if(d.estado.includes("NO")) clase="rojo";
+
+  div.className = "result " + clase;
+
+  div.innerHTML = `
+    <h3>${d.estado}</h3>
+    <p>Uso: ${d.uso}</p>
+    <p>Altura: ${d.altura}</p>
+    <p>Índice: ${d.indice}</p>
+
+    <ul>
+      ${d.restricciones.map(r=>`<li>${r}</li>`).join("")}
+    </ul>
+
+    <button onclick="generar()">📄 Generar licencia</button>
+    <button onclick="visor('${predio}')">🔍 Ver análisis avanzado</button>
+  `;
+}
+
+function generar(){
+  alert("Aquí conectas POST /generar-licencia");
+}
+
+function visor(predio){
+
+  const url = `/visor/index.html?modo=experto&predio=${predio}&lat=5.53&lon=-73.36`;
+
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
